@@ -86,3 +86,20 @@ Preserved and expanded in `students.py` and verified via `tests/test_students.py
 - **RNF-WEB-005**: Zero external transmission of academic records to backend servers, analytics, or AI models.
 - **RNF-WEB-006**: Graceful fallback to in-memory mode if `localStorage` throws quota, security, or JSON corruption errors.
 - **RNF-WEB-007**: Static export (`output: 'export'`) published via quality-gated GitHub Actions to GitHub Pages.
+
+
+## 4. FEAT-005 Academic Intelligence (v0.6 source implementation)
+
+| ID | Requirement | Verification |
+|---|---|---|
+| RF-WEB-027 | Create a dated attendance session for an existing course and allowed term. | progress.test.ts, pending E2E |
+| RF-WEB-028 | Record or correct presence for an enrolled synthetic student in the same course/term; reject mismatches and duplicates. | progress.test.ts |
+| RF-WEB-029 | Calculate attendance percent; return no data when no sessions exist. | progress.test.ts |
+| RF-WEB-030 | Configure valid integer category weights summing to 100. | progress.test.ts |
+| RF-WEB-031 | Derive a weighted grade only from graded activities and fully represented weighted categories. | progress.test.ts |
+| RF-WEB-032 | Render a read-only fictional transcript and progress dashboard without duplicating canonical activity scores. | progress.test.ts, pending E2E |
+| RNF-WEB-008 | Existing student, course, enrollment and activity workflows remain intact. | Existing regression suites |
+| RNF-WEB-009 | Attendance and grade preferences are ephemeral by default and persisted only with optional privacy consent; purge on revocation. | storage.test.ts |
+| RNF-WEB-010 | Clearly label academic scores as fictional and implement accessible EN/PT-BR controls. | E2E / manual review |
+
+Status: Source implementation in main. Tests, build, deployment and reviewer approval must be independently verified before release.
