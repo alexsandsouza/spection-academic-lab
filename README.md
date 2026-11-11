@@ -165,11 +165,19 @@ Every line of code in this repository is backed by reviewable engineering docume
 | SPECTION Engineering Journey & Visual Traceability Explorer | `FEAT-WEB-001..004` | Implemented & Tested |
 | Bilingual UI (`EN` / `PT-BR`) & Theme Switching (`Dark` / `Light`) | `FEAT-WEB-001..004` | Implemented & Tested |
 | Attendance, weighted grades & synthetic transcript (`v0.6`) | `FEAT-005` | Implemented & CI verified - Human review pending |
-| Consolidated reports, PDF & validated JSON/CSV imports (`v0.7`) | `FEAT-006` | Planned |\n| Simulated RBAC personas & STRIDE model (`v0.8`) | `FEAT-007` | Planned |\n| Optional API/PostgreSQL architecture (`v0.9`) | `FEAT-008` | Planned |\n| Verified release and accessibility (`v1.0`) | `FEAT-009` | Planned |\n| Optional human-reviewed AI activity assistant (`v1.1`) | `FEAT-010` | Exploratory |
+| Consolidated reports, PDF & validated JSON/CSV imports (`v0.7`) | `FEAT-006` | Planned |
+| Simulated RBAC personas & STRIDE model (`v0.8`) | `FEAT-007` | Planned |
+| Optional API/PostgreSQL architecture (`v0.9`) | `FEAT-008` | Planned |
+| Verified release and accessibility (`v1.0`) | `FEAT-009` | Planned |
+| Optional human-reviewed AI activity assistant (`v1.1`) | `FEAT-010` | Exploratory |
 
 ---
 
-**[View the complete versioned roadmap and SDD acceptance criteria](docs/roadmap.md).** [FEAT-005 specification](specs/academic-intelligence-v06.md) | [Academic Intelligence demo](https://alexsandsouza.github.io/spection-academic-lab/progress/). Planned releases are not available in the live demo until verification.\n\n---\n\n## 7. Automated Testing & Verification Evidence
+**[View the complete versioned roadmap and SDD acceptance criteria](docs/roadmap.md).** [FEAT-005 specification](specs/academic-intelligence-v06.md) | [Academic Intelligence demo](https://alexsandsouza.github.io/spection-academic-lab/progress/). Planned releases are not available in the live demo until verification.
+
+---
+
+## 7. Automated Testing & Verification Evidence
 
 All tests are executed in CI (`.github/workflows/academic-lab.yml`) and documented in [docs/evidence.md](docs/evidence.md):
 
