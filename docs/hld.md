@@ -94,3 +94,12 @@ flowchart TB
 | **Domain Layer -> Browser `localStorage`** | Persistence boundary on the local device. | Blocked unless `consent.allowLocalStorage === true`. Schema validation per entity on load; `try/catch` fallback to memory (`RNF-WEB-006`). |
 | **Domain Layer -> CSV File Export** | Data exported from Students, Courses, Enrollments, or Activities. | RFC 4180 quote escaping plus formula-prefix neutralization (`'`, `=`, `+`, `-`, `@`, `\t`, `\r`) (`RF-WEB-013`). |
 | **Browser -> Network** | Static asset delivery from GitHub Pages. | Zero application API calls (`RNF-WEB-005`). No third-party tracking or analytics. |
+
+
+## FEAT-005 - Academic Intelligence architecture extension
+
+The existing AcademicLabContext continues to own the v0.5 students, courses, enrollments, and activities. A nested AcademicProgressProvider stores attendance sessions, records and grade weights. It derives transcript rows from the canonical existing enrollment/activity records rather than copying grade values.
+
+Flow: ProgressPage -> AcademicProgressContext -> pure progress domain -> optional privacy-gated browser storage. The existing AppShell and GitHub Pages static export remain unchanged.
+
+Trust boundary: progress uses only fictional records and never sends them to an API. New key spection_academic_lab_progress_v1 is written only after opt-in; both consent refusal and revocation purge it. A distinct validated snapshot is used to avoid changing legacy collection schemas.
