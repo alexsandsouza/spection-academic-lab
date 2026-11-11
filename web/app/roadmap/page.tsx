@@ -76,40 +76,52 @@ export default function RoadmapPage() {
           ],
     },
     {
-      version: 'v0.6 (Planned)',
-      feature: 'FEAT-005',
-      title: isPt
-        ? 'Simulacao de Perfis (RBAC) e Explorador Interativo de Threat Model STRIDE'
-        : 'Role-Based Access Control (RBAC) Simulation & STRIDE Threat Model Explorer',
-      status: 'Planned',
+      version: "v0.6 (Source implemented)",
+      feature: "FEAT-005",
+      title: isPt ? "Inteligência Acadêmica: Frequência, Notas e Boletim" : "Academic Intelligence: Attendance, Grades & Transcript",
+      status: "Source Implemented - Verification Pending",
       completed: false,
-      items: isPt
-        ? [
-            'Simulacao client-side de visoes por perfil (Secretaria, Docente, Estudante)',
-            'Matriz interativa STRIDE conectada aos controles de seguranca do repositorio',
-          ]
-        : [
-            'Client-side role simulation (Registrar, Professor, Student personas)',
-            'Interactive STRIDE matrix linked to repository security controls',
-          ],
+      items: isPt ? ["Cadastro de aulas e registro de presença fictícia","Médias ponderadas e boletim de demonstração","Testes e liberação sujeitos à validação no CI"] : ["Attendance sessions and synthetic presence records","Weighted grades and demonstration transcript","CI and release review pending"],
     },
     {
-      version: 'v0.7 (Planned)',
-      feature: 'FEAT-006',
-      title: isPt
-        ? 'Importacao em Lote (CSV/JSON) com Validacao de Esquema e Previa de Conflitos'
-        : 'Batch CSV/JSON Import with Schema Validation & Conflict Resolution Preview',
-      status: 'Planned',
+      version: "v0.7 (Planned)",
+      feature: "FEAT-006",
+      title: isPt ? "Relatórios PDF/CSV e Importação Validada" : "Reports PDF/CSV and Validated Imports",
+      status: "Planned",
       completed: false,
-      items: isPt
-        ? [
-            'Importador local seguro com deteccao de duplicidades antes da confirmacao',
-            'Relatorio de auditoria de integridade referencial',
-          ]
-        : [
-            'Safe client-side batch importer with duplicate detection preview',
-            'Referential integrity audit report',
-          ],
+      items: isPt ? ["Relatórios acadêmicos consolidados","Prévia de importação e análise de conflitos"] : ["Consolidated academic reports","Import preview and conflict validation"],
+    },
+    {
+      version: "v0.8 (Planned)",
+      feature: "FEAT-007",
+      title: isPt ? "Papéis Simulados e Segurança STRIDE" : "Simulated Roles and STRIDE Security",
+      status: "Planned",
+      completed: false,
+      items: isPt ? ["Perfis demonstrativos sem autenticação real","Explorador de ameaças e medidas de proteção"] : ["Demonstration-only personas without real authorization","Threat modeling and safeguards"],
+    },
+    {
+      version: "v0.9 (Planned)",
+      feature: "FEAT-008",
+      title: isPt ? "API e Banco de Dados Opcional" : "Optional API and Database",
+      status: "Planned",
+      completed: false,
+      items: isPt ? ["API REST e PostgreSQL em ambiente separado","Testes de integração e migrações"] : ["REST API and PostgreSQL in a separate environment","Integration tests and migrations"],
+    },
+    {
+      version: "v1.0 (Planned)",
+      feature: "FEAT-009",
+      title: isPt ? "Release Verificada" : "Verified Release",
+      status: "Planned",
+      completed: false,
+      items: isPt ? ["Acessibilidade, segurança e testes E2E","Evidências e aprovação humana"] : ["Accessibility, security and end-to-end tests","Evidence and human approval"],
+    },
+    {
+      version: "v1.1 (Exploratory)",
+      feature: "FEAT-010",
+      title: isPt ? "Assistente Educacional de IA" : "AI Academic Assistant",
+      status: "Planned",
+      completed: false,
+      items: isPt ? ["Sugestões de atividades com revisão humana","Avaliação e privacidade desde a concepção"] : ["Instructor-reviewed activity suggestions","Evaluation and privacy by design"],
     },
   ];
 
