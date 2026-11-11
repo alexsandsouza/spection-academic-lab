@@ -4,6 +4,21 @@ import path from 'path';
 const SCREENSHOTS_DIR = path.resolve(__dirname, '../../../docs/screenshots');
 
 test.describe('SPECTION Academic Lab End-to-End Verification', () => {
+  test('FEAT-005: attendance session, gradebook view and privacy-first storage', async ({ page }) => {
+    await page.goto('/progress');
+    await expect(page.getByText('Academic Intelligence').first()).toBeVisible();
+    await page.getByTestId('privacy-essential-btn').click();
+    await page.getByRole('button', { name: 'Load demo data' }).click();
+    await page.getByLabel('Session title').fill('Synthetic lecture 01');
+    await page.getByRole('button', { name: 'Create session' }).click();
+    await expect(page.getByText('Synthetic lecture 01')).toBeVisible();
+    await page.getByRole('combobox', { name: 'ENR-0001' }).selectOption('yes');
+    await expect(page.getByRole('combobox', { name: 'ENR-0001' })).toHaveValue('yes');
+    await expect(page.getByText('Synthetic academic transcript')).toBeVisible();
+    const stored = await page.evaluate(() => localStorage.getItem('spection_academic_lab_progress_v1'));
+    expect(stored).toBeNull();
+  });
+
   test('1. Access dashboard, refuse optional storage, and verify ephemeral memory default', async ({
     page,
   }) => {
