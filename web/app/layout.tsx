@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { AcademicLabProvider } from '../lib/context/AcademicLabContext';
+import { AcademicProgressProvider } from '../lib/context/AcademicProgressContext';
 import { AppShell } from '../components/AppShell';
 
 export const metadata: Metadata = {
@@ -27,7 +28,7 @@ export default function RootLayout({
     <html lang="en" data-theme="dark">
       <body>
         <AcademicLabProvider>
-          <AppShell>{children}</AppShell>
+          <AcademicProgressProvider><AppShell>{children}</AppShell></AcademicProgressProvider>
         </AcademicLabProvider>
       </body>
     </html>
