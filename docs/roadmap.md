@@ -1,6 +1,6 @@
 # SPECTION Academic Lab - Roadmap 2026
 
-> Proposed milestones. Current delivered baseline: v0.5.0. All student and academic information is synthetic. Dates and releases are not promised.
+> Proposed milestones. Current web release: v0.6.0 (CI verified). Previous stable baseline: v0.5.0. All student and academic information is synthetic. Dates and releases are not promised.
 
 ## Vision
 
@@ -27,7 +27,7 @@ These functions are NOT new deliverables. All future releases must preserve them
 | v1.0 | Verified Release | Stable, reviewed open-source milestone with accessibility, security and reproducible releases | CI, E2E, human-reviewed Quality Gates and evidence |
 | v1.1 | AI Academic Assistant | Optional suggestions for teaching activities and feedback drafts | Human approval, evaluation, provenance and privacy review |
 
-## v0.6 - FEAT-005 - next development target
+## v0.6 - FEAT-005 - implemented and CI verified
 
 ### Product goal
 Help users simulate academic progress from enrollment through grades and attendance without entering real student information.
@@ -59,7 +59,7 @@ Help users simulate academic progress from enrollment through grades and attenda
 6. Execute E2E, accessibility, privacy and regression tests.
 7. Record actual evidence, human review and release notes.
 
-The v0.6 label remains PLANNED until its gates and browser deployment are verified.
+v0.6 source, tests, static export and GitHub Pages deployment were verified by the GitHub Actions workflow run 42953864674. Independent visual and accessibility review remain pending.
 
 ## v0.7 - Reports and imports
 
