@@ -67,6 +67,12 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: /spection-academic-lab
         run: npm run build
 
+      - name: Verify Academic Intelligence exported route
+        run: |
+          test -s web/out/index.html
+          test -s web/out/progress/index.html
+          test -s web/out/activities/index.html
+
       - name: Upload Playwright report and test logs artifact
         if: always()
         uses: actions/upload-artifact@v4
