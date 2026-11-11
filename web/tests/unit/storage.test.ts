@@ -65,6 +65,14 @@ describe('Storage & Privacy Layer (RNF-WEB-003, RNF-WEB-004, RNF-WEB-006)', () =
     expect(window.localStorage.getItem(STORAGE_KEYS.STUDENTS)).toBeNull();
   });
 
+  it('purges synthetic attendance and grade preferences on consent revocation (RNF-009)', () => {
+    savePrivacyConsent(true);
+    window.localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify({sessions:[],records:[],weights:{EXAM:40,PROJECT:30,LAB:20,QUIZ:10}}));
+    expect(window.localStorage.getItem(STORAGE_KEYS.PROGRESS)).not.toBeNull();
+    revokePrivacyConsentAndPurge();
+    expect(window.localStorage.getItem(STORAGE_KEYS.PROGRESS)).toBeNull();
+  });
+
   it('handles localStorage exceptions and corrupted payloads gracefully (RNF-WEB-006)', () => {
     const throwingStorage: Storage = {
       length: 0,
