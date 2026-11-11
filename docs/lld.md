@@ -2,194 +2,102 @@
 
 ## Document Control
 
-- **Project**: SPECTION Academic Lab
+- **Project**: SPECTION Academic Lab (`v0.5.0`)
 - **Maintainer**: Alexsand Farias de Souza
 - **Related Documents**: [PRD](prd.md), [HLD](hld.md), [Traceability](traceability.md)
 
 ---
 
-## 1. Historical Python LLD (FEAT-001)
+## 1. Python Reference LLD (`students.py`)
 
-Preserved in `students.py`:
-- `Registry(db=':memory:')`: Creates table `students(code TEXT PRIMARY KEY, name TEXT NOT NULL)`.
-- `add(code, name)`: Trims input, uppercases `code`, validates `DEMO-[0-9]{4}` pattern and `2 <= len(name) <= 80`; executes parameterized `INSERT` inside a transaction; raises `ValueError` on invalid input or duplicate code.
-- `list()`: Executes `SELECT code, name FROM students ORDER BY code` and returns a list of tuples.
-- `close()`: Releases the SQLite connection.
+`Registry(db=':memory:')` initializes four SQLite tables with parameterized SQL:
+- `students(code TEXT PRIMARY KEY, name TEXT NOT NULL)`
+- `courses(code TEXT PRIMARY KEY, title TEXT NOT NULL, workload INTEGER NOT NULL)`
+- `enrollments(student_code TEXT NOT NULL, course_code TEXT NOT NULL, term TEXT NOT NULL, PRIMARY KEY (student_code, course_code, term))`
+- `activities(code TEXT PRIMARY KEY, student_code TEXT NOT NULL, course_code TEXT NOT NULL, title TEXT NOT NULL, score REAL NOT NULL)`
 
----
-
-## 2. Web Application Directory Structure (`web/`)
-
-```text
-web/
-├── app/
-│   ├── layout.tsx          # Root layout, metadata, AppProviders, AppShell
-│   ├── page.tsx            # Academic Dashboard view
-│   ├── students/
-│   │   └── page.tsx        # FEAT-WEB-001 Student Registry CRUD view
-│   ├── documentation/
-│   │   └── page.tsx        # SPECTION Engineering Journey & SDD Documentation
-│   ├── roadmap/
-│   │   └── page.tsx        # Product & Engineering Roadmap view
-│   ├── about/
-│   │   └── page.tsx        # About Academic Lab, Legal (Privacy Policy & Terms)
-│   └── globals.css         # Design system tokens (Light/Dark) & utility styles
-├── components/
-│   ├── AppShell.tsx        # Sidebar, Header, Breadcrumbs, Footer, Modals
-│   ├── BrandLogo.tsx       # Custom SVG vector brand for Academic Lab
-│   ├── PrivacyBanner.tsx   # First-visit LGPD/GDPR notice & Preferences modal
-│   ├── ConfirmDialog.tsx   # Accessible confirmation modal for delete/clear
-│   └── StudentForm.tsx     # Reusable create/edit student form with validation
-├── lib/
-│   ├── domain/
-│   │   └── students.ts     # Pure TypeScript domain models, validation, CRUD, CSV, metrics
-│   ├── storage/
-│   │   └── storage.ts      # MemoryStorageAdapter, LocalStorageAdapter, PrivacyConsent
-│   ├── context/
-│   │   └── AcademicLabContext.tsx # React state orchestration, theme & i18n
-│   ├── data/
-│   │   └── engineering.ts  # Verifiable Engineering Journey & Traceability metadata
-│   └── i18n/
-│       └── dictionaries.ts # English (EN) and Brazilian Portuguese (PT-BR) copy
-├── public/
-│   ├── brand-banner.svg    # Vector banner for README and portal preview
-│   └── favicon.svg         # Vector favicon
-└── tests/
-    ├── unit/
-    │   ├── students.test.ts
-    │   └── storage.test.ts
-    ├── components/
-    │   └── academic-lab.test.tsx
-    └── e2e/
-        └── academic-lab.spec.ts
-```
+### Public Methods
+- `add(code, name)` & `list()`: Original `FEAT-001` methods preserved with 100% signature and return compatibility.
+- `add_course(code, title, workload=60)` & `list_courses()`: Validates `^COURSE-[0-9]{2}$`, `3 <= len(title) <= 80`, and `15 <= int(workload) <= 240`.
+- `enroll(student_code, course_code, term='2026.1')` & `list_enrollments()`: Verifies student and course existence, validates `^20[2-9][0-9]\.[12]$` term, and prevents duplicate enrollments.
+- `add_activity(code, student_code, course_code, title, score)` & `list_activities()`: Validates `^ACT-[0-9]{4}$`, verifies existing enrollment for `(student_code, course_code)`, validates `3 <= len(title) <= 80` and `0 <= float(score) <= 100`.
+- `close()`: Releases database connection.
 
 ---
 
-## 3. TypeScript Domain Contracts (`web/lib/domain/students.ts`)
+## 2. Web TypeScript Domain Contracts (`web/lib/domain/`)
 
-### 3.1 Core Models
+### 2.1 Student Contract (`web/lib/domain/students.ts`)
+- `Student`: `{ id, code, name, course, createdAt, updatedAt }`
+- Pattern: `^DEMO-[0-9]{4}$`, name `2..80` chars, course in `DEMO_COURSES`.
+
+### 2.2 Academic Suite Contracts (`web/lib/domain/academic.ts`)
 
 ```typescript
-export const DEMO_COURSES = [
-  'Software Engineering',
-  'Computer Science',
-  'Information Systems',
-  'Data Science & AI',
-  'Cybersecurity',
-  'Computational Mathematics',
-] as const;
-
-export type DemoCourse = (typeof DEMO_COURSES)[number];
-
-export type Student = {
+export type CourseItem = {
   id: string;
-  code: string;
-  name: string;
-  course: string;
+  code: string;          // ^COURSE-[0-9]{2}$ (e.g., COURSE-01)
+  title: string;         // 3..80 chars
+  program: string;       // Must belong to DEMO_COURSES
+  workloadHours: number; // Integer 15..240
   createdAt: string;
   updatedAt: string;
 };
 
-export type StudentInput = {
-  code: string;
-  name: string;
-  course: string;
+export type AcademicTerm = '2026.1' | '2026.2' | '2027.1';
+export type EnrollmentStatus = 'ACTIVE' | 'COMPLETED' | 'DROPPED';
+
+export type Enrollment = {
+  id: string;
+  code: string;          // ^ENR-[0-9]{4}$ (e.g., ENR-0001)
+  studentId: string;
+  studentCode: string;
+  studentName: string;
+  courseId: string;
+  courseCode: string;
+  courseTitle: string;
+  term: AcademicTerm;
+  status: EnrollmentStatus;
+  createdAt: string;
+  updatedAt: string;
 };
 
-export type ValidationFieldErrors = {
-  code?: string;
-  name?: string;
-  course?: string;
-};
+export type ActivityCategory = 'EXAM' | 'PROJECT' | 'LAB' | 'QUIZ';
+export type ActivityStatus = 'PENDING' | 'SUBMITTED' | 'GRADED';
 
-export type ValidationResult = {
-  valid: boolean;
-  normalized?: StudentInput;
-  errors: ValidationFieldErrors;
-};
-
-export type SortField = 'code' | 'name' | 'course' | 'createdAt';
-export type SortDirection = 'asc' | 'desc';
-
-export type DashboardMetrics = {
-  totalStudents: number;
-  totalCoursesRepresented: number;
-  latestStudent: Student | null;
-  courseDistribution: Array<{
-    course: string;
-    count: number;
-    percentage: number;
-  }>;
+export type AcademicActivity = {
+  id: string;
+  code: string;          // ^ACT-[0-9]{4}$ (e.g., ACT-0001)
+  enrollmentId: string;
+  studentCode: string;
+  studentName: string;
+  courseCode: string;
+  courseTitle: string;
+  title: string;         // 3..80 chars
+  category: ActivityCategory;
+  score: number;         // 0..100
+  maxScore: number;      // 100
+  status: ActivityStatus;
+  createdAt: string;
+  updatedAt: string;
 };
 ```
 
-### 3.2 Domain Functions & Business Logic
-
-1. `normalizeStudentCode(rawCode: string): string`
-   - Trims leading/trailing whitespace and converts characters to uppercase (`rawCode.trim().toUpperCase()`).
-2. ` normalizeStudentName(rawName: string): string`
-   - Trims leading/trailing whitespace and collapses internal multiple spaces to a single space.
-3. `validateStudentInput(input: StudentInput, existingStudents: Student[], editingId?: string): ValidationResult`
-   - Normalizes `code` and `name`.
-   - Checks `^DEMO-[0-9]{4}$` on `code` (`RF-WEB-002`).
-   - Checks `2 <= name.length <= 80` (`RF-WEB-003`).
-   - Checks `DEMO_COURSES.includes(course)` (`RF-WEB-004`).
-   - Checks uniqueness of normalized `code` against `existingStudents`, ignoring the record whose `id === editingId` during edits (`RF-WEB-005`).
-4. `createStudentRecord(existing: Student[], input: StudentInput, now?: Date): { students: Student[]; created: Student }`
-   - Invokes `validateStudentInput`. Throws `StudentValidationError` if invalid.
-   - Generates a deterministic/UUID identifier, sets `createdAt` and `updatedAt` ISO timestamps, appends the record, and returns the sorted list.
-5. `updateStudentRecord(existing: Student[], id: string, input: StudentInput, now?: Date): { students: Student[]; updated: Student }`
-   - Locates target record by `id` (throws error if not found).
-   - Validates input with `editingId = id`.
-   - Updates `code`, `name`, `course`, and `updatedAt`, preserving `createdAt` (`RF-WEB-009`).
-6. `deleteStudentRecord(existing: Student[], id: string): Student[]`
-   - Removes the student matching `id` (`RF-WEB-010`).
-7. `filterAndSortStudents(students: Student[], query: string, courseFilter: string, sortField: SortField, sortDirection: SortDirection): Student[]`
-   - Filters by case-insensitive substring on `code`, `name`, or `course` (`RF-WEB-007`) and optional exact `courseFilter`.
-   - Sorts deterministically by `sortField` and `sortDirection` (`RF-WEB-008`), using `code` as tie-breaker.
-8. `mergeDemoStudents(existing: Student[], now?: Date): { students: Student[]; addedCount: number }`
-   - Iterates over the curated `DEMO_SEED_STUDENTS` dataset and inserts only records whose normalized `code` is not already present (`RF-WEB-011`).
-9. `calculateDashboardMetrics(students: Student[]): DashboardMetrics`
-   - Computes `totalStudents`, count of distinct courses with at least 1 student, most recently created/updated record (`latestStudent`), and per-course counts and percentages (`RF-WEB-014`).
-10. `exportStudentsToCsv(students: Student[]): string`
-    - Generates header `id,code,name,course,createdAt,updatedAt`.
-    - Sanitizes each cell: if the value or trimmed value starts with `=`, `+`, `-`, `@`, `\t`, or `\r`, prefixes with `'`. Wraps fields in double quotes and escapes internal `"` as `""` (`RF-WEB-013`).
+### 2.3 Validation & Business Functions (`web/lib/domain/academic.ts`)
+- `validateCourseInput`, `createCourseRecord`, `updateCourseRecord`, `deleteCourseRecord` (blocks deletion if referenced by any enrollment: `COURSE_HAS_ENROLLMENTS`).
+- `validateEnrollmentInput`, `createEnrollmentRecord`, `updateEnrollmentStatus`, `deleteEnrollmentRecord` (cascades deletion to activities referencing that enrollment).
+- `validateActivityInput`, `createActivityRecord`, `updateActivityRecord`, `deleteActivityRecord`.
+- `mergeDemoAcademicSuite`: Idempotently seeds demonstration students (`6`), courses (`6`), enrollments (`6`), and activities (`6`) without duplicating existing records.
+- `exportCoursesToCsv`, `exportEnrollmentsToCsv`, `exportActivitiesToCsv`: Uses `sanitizeCsvCell` to escape quotes and neutralize formula prefixes (`=`, `+`, `-`, `@`, `\t`, `\r`).
 
 ---
 
-## 4. Storage & Privacy Contracts (`web/lib/storage/storage.ts`)
+## 3. Storage & Privacy Persistence (`web/lib/storage/storage.ts`)
 
-```typescript
-export type StorageMode = 'memory' | 'local';
+When `consent.allowLocalStorage === true`, `LocalStorageAdapter` persists and validates each collection under versioned keys:
+- `spection_academic_lab_students_v1`
+- `spection_academic_lab_courses_v1`
+- `spection_academic_lab_enrollments_v1`
+- `spection_academic_lab_activities_v1`
 
-export type PrivacyConsentState = {
-  decided: boolean;
-  allowLocalStorage: boolean;
-  updatedAt: string | null;
-};
-
-export interface StudentStoragePort {
-  readonly mode: StorageMode;
-  loadStudents(): { students: Student[]; warning?: string };
-  saveStudents(students: Student[]): { ok: boolean; warning?: string };
-  clearStudents(): { ok: boolean; warning?: string };
-}
-```
-
-### Error Handling & Persistence Rules
-- **Blocked Persistence Without Consent**: `LocalStorageAdapter.saveStudents` verifies that `allowLocalStorage` is active before writing. If not authorized, it refuses to write to `window.localStorage` and returns `{ ok: false, warning: '...' }`.
-- **Storage Failure Resilience (`RNF-WEB-006`)**: If `window.localStorage.getItem`, `setItem`, or `removeItem` throws `QuotaExceededError` or `SecurityError` (e.g., private browsing restriction), the controller catches the exception, logs a structured warning message in state, and continues operating in memory mode without crashing the UI.
-
----
-
-## 5. Testing Strategy
-
-1. **Python Baseline Tests (`tests/test_students.py`)**:
-   - Executed via `python -m unittest discover -s tests -v`. Verifies `RF-001` through `RNF-001`.
-2. **Unit Tests (`web/tests/unit/`)**:
-   - Executed via Vitest (`npm test`). Covers code normalization, input validation bounds, duplicate prevention, CRUD operations, search, sorting, demo seed idempotency, dashboard metrics calculation, CSV export formula sanitization, consent enforcement, and `localStorage` exception handling.
-3. **Component Tests (`web/tests/components/`)**:
-   - Executed via Vitest + React Testing Library (`jsdom`). Covers valid/invalid form submissions, validation error alerts, table rendering, empty states, delete confirmation dialog, live dashboard indicator updates, and privacy consent controls.
-4. **End-to-End Browser Tests (`web/tests/e2e/`)**:
-   - Executed via Playwright against the production static build. Verifies full user journeys: visiting the app, rejecting optional storage, creating/searching/editing/deleting a student, duplicate error handling, authorizing local storage across page reloads, revoking consent and verifying `localStorage` erasure, and mobile navigation menu interaction.
+When `consent.allowLocalStorage === false` (default on first visit or after revocation), all four keys are removed from `window.localStorage` and kept exclusively in `MemoryStorageAdapter`.

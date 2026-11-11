@@ -1,46 +1,28 @@
-# Feature Specification: FEAT-WEB-001 - Synthetic Student Management Web Application
+# Feature Specification: FEAT-WEB-001..004 - Complete Academic Workspace Web Application
 
 ## 1. Overview
 
-- **Feature ID**: `FEAT-WEB-001`
-- **Title**: Synthetic Student Management, Academic Dashboard, Privacy Controls, and SPECTION Engineering Journey
-- **Requirements Covered**: `RF-WEB-001` through `RF-WEB-014`, `RNF-WEB-001` through `RNF-WEB-007`
-- **Related ADRs**: `ADR-0002`, `ADR-0003`, `ADR-0004`, `ADR-0005`, `ADR-0006`
-- **Dependencies**: Preserves `FEAT-001` (`students.py` and `tests/test_students.py`) without modification.
+- **Feature IDs**:
+  - `FEAT-WEB-001`: Synthetic Student Registry & Academic Dashboard (`RF-WEB-001`..`RF-WEB-014`)
+  - `FEAT-WEB-002`: Synthetic Courses Catalog (`RF-WEB-015`..`RF-WEB-018`)
+  - `FEAT-WEB-003`: Relational Student Enrollments (`RF-WEB-019`..`RF-WEB-022`)
+  - `FEAT-WEB-004`: Academic Activities & Synthetic Assessments (`RF-WEB-023`..`RF-WEB-026`)
+- **Non-Functional Requirements**: `RNF-WEB-001` through `RNF-WEB-007`
+- **Related ADRs**: `ADR-0001` through `ADR-0007`
+- **Polyglot Parity**: Synchronized with `FEAT-001`..`FEAT-004` in `students.py` and `tests/test_students.py`.
 
 ## 2. User Stories
 
-1. **As a learner or evaluator of SPECTION**, I want an interactive academic dashboard that displays real-time indicators calculated from synthetic student records so I can observe an authentic software increment.
-2. **As an instructor or student**, I want to create, search, filter, sort, edit, delete, seed, clear, and export fictional student records (`DEMO-0001`) with strict validation so I can verify how domain invariants are enforced in the browser.
-3. **As a privacy-conscious visitor**, I want the application to keep demonstration records in temporary memory by default and only persist to `localStorage` if I explicitly opt in, with the ability to revoke consent and purge persisted data at any time.
-4. **As a software engineer studying Spec-Driven Development**, I want an **Engineering Journey** view that maps Product Brief, PRD, HLD, LLD, ADRs, Feature Specs, Tasks, Quality Gates, and Release Evidence to real repository artifacts and verifiable states.
+1. **As a learner or evaluator of SPECTION**, I want an interactive academic dashboard that displays real-time indicators calculated from synthetic students, courses, enrollments, and graded activities so I can inspect a complete multi-entity software system.
+2. **As an instructor or student**, I want to manage fictional students (`DEMO-0001`), courses (`COURSE-01`), enrollments (`ENR-0001`), and academic activities (`ACT-0001`) with relational integrity and formula-safe CSV export.
+3. **As a privacy-conscious visitor**, I want all four entity collections kept in temporary memory by default and persisted to `localStorage` only upon explicit opt-in, with immediate revocation and erasure.
+4. **As a software engineer studying Spec-Driven Development**, I want the **Engineering Journey** view to map all 10 lifecycle stages and requirements to real repository files and automated tests.
 
-## 3. Data Contract
+## 3. Data Contracts
 
-```typescript
-export type Student = {
-  id: string;
-  code: string;      // Normalized uppercase matching ^DEMO-[0-9]{4}$
-  name: string;      // Trimmed fictional name, 2 to 80 characters
-  course: string;    // Must belong to DEMO_COURSES
-  createdAt: string; // ISO-8601 timestamp
-  updatedAt: string; // ISO-8601 timestamp
-};
-```
+- `Student`: `{ id, code, name, course, createdAt, updatedAt }` (`^DEMO-[0-9]{4}$`)
+- `CourseItem`: `{ id, code, title, program, workloadHours, createdAt, updatedAt }` (`^COURSE-[0-9]{2}$`, `15..240` hours)
+- `Enrollment`: `{ id, code, studentId, studentCode, studentName, courseId, courseCode, courseTitle, term, status, createdAt, updatedAt }` (`^ENR-[0-9]{4}$`)
+- `AcademicActivity`: `{ id, code, enrollmentId, studentCode, studentName, courseCode, courseTitle, title, category, score, maxScore, status, createdAt, updatedAt }` (`^ACT-[0-9]{4}$`, score `0..100`)
 
 Strictly excluded fields: CPF, RG, national ID, address, phone number, birth date, or email address.
-
-## 4. Scenario-Based Acceptance Criteria Summary
-
-Full Given/When/Then acceptance criteria are detailed in [specs/academic-web/acceptance.md](acceptance.md):
-
-- **AC-WEB-001**: Valid student creation normalizes `code` and updates table and dashboard indicators (`RF-WEB-001`, `RF-WEB-002`, `RF-WEB-014`).
-- **AC-WEB-002**: Invalid `code` pattern, out-of-range `name`, or invalid `course` displays accessible validation errors and prevents creation (`RF-WEB-002`, `RF-WEB-003`, `RF-WEB-004`).
-- **AC-WEB-003**: Duplicate student code (even with lowercase or extra spaces) is rejected (`RF-WEB-005`).
-- **AC-WEB-004**: Search by name/code/course and multi-field sorting update the displayed rows accurately (`RF-WEB-006`, `RF-WEB-007`, `RF-WEB-008`).
-- **AC-WEB-005**: Editing a student updates fields and `updatedAt` while enforcing validation and uniqueness (`RF-WEB-009`).
-- **AC-WEB-006**: Deleting a student or clearing all records requires explicit modal confirmation (`RF-WEB-010`, `RF-WEB-012`).
-- **AC-WEB-007**: Loading demonstration data adds curated records idempotently without duplicating existing codes (`RF-WEB-011`).
-- **AC-WEB-008**: Exporting to CSV escapes quotes/delimiters and neutralizes formula injection prefixes (`RF-WEB-013`).
-- **AC-WEB-009**: Privacy consent defaults to ephemeral memory storage, supports opt-in `localStorage` persistence across reloads, and purges stored data upon revocation (`RNF-WEB-003`, `RNF-WEB-004`, `RNF-WEB-006`).
-- **AC-WEB-010**: Desktop and mobile navigation, theme toggle, language switch (EN/PT-BR), and keyboard accessibility operate cleanly (`RNF-WEB-001`, `RNF-WEB-002`).

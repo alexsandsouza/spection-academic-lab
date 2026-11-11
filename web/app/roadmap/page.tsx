@@ -21,18 +21,18 @@ export default function RoadmapPage() {
         ? [
             'Modulo students.py sem dependencias externas',
             'Validacao DEMO-0001, tamanho de nome (2-80) e SQL parametrizado',
-            '5 testes automatizados em tests/test_students.py',
+            'Testes unitarios automatizados em tests/test_students.py',
             '9 Agent Skills locais em .agents/skills/',
           ]
         : [
             'Zero-dependency students.py module with in-memory SQLite default',
             'DEMO-0001 normalization, name bounds (2-80), and parameterized SQL',
-            '5 automated unit tests in tests/test_students.py',
+            'Automated unit tests in tests/test_students.py',
             '9 local SPECTION Agent Skills in .agents/skills/',
           ],
     },
     {
-      version: 'v0.3 (Current)',
+      version: 'v0.3',
       feature: 'FEAT-WEB-001',
       title: isPt
         ? 'Aplicacao Web Interativa, Dashboard, Privacidade & Engineering Journey'
@@ -54,57 +54,61 @@ export default function RoadmapPage() {
           ],
     },
     {
-      version: 'v0.2 (Next)',
-      feature: 'FEAT-002',
+      version: 'v0.5 (Current)',
+      feature: 'FEAT-WEB-002..004',
       title: isPt
-        ? 'Disciplinas, Cursos e Restricoes Relacionais de Matricula'
-        : 'Courses, Curricula, and Enrollment Relational Constraints',
-      status: 'Planned',
-      completed: false,
+        ? 'Suite Academica Relacional: Disciplinas, Matriculas e Atividades Avaliativas'
+        : 'Relational Academic Suite: Courses, Enrollments & Academic Activities',
+      status: 'Implemented & Verified',
+      completed: true,
       items: isPt
         ? [
-            'Cadastro dedicado de disciplinas com carga horaria e pre-requisitos',
-            'Vinculo relacional entre estudantes ficticios e turmas demonstrativas',
+            'Catalogo de Disciplinas (/courses - COURSE-01) com bloqueio referencial de exclusao',
+            'Gestao Relacional de Matriculas (/enrollments - ENR-0001) por periodo letivo',
+            'Atividades Academicas e Notas (/activities - ACT-0001) com calculo de media no dashboard',
+            'Paridade poliglota entre Python/SQLite (8 testes) e TypeScript/Next.js',
           ]
         : [
-            'Dedicated course entity management with credit hours and prerequisites',
-            'Relational enrollment constraints between synthetic students and classes',
+            'Synthetic Courses Catalog (/courses - COURSE-01) with referential deletion guard',
+            'Relational Student Enrollments (/enrollments - ENR-0001) per academic term',
+            'Academic Activities & Scores (/activities - ACT-0001) with live dashboard gradebook average',
+            'Polyglot parity across Python/SQLite (8 tests) and TypeScript/Next.js',
           ],
     },
     {
-      version: 'v0.4',
-      feature: 'FEAT-003',
+      version: 'v0.6 (Planned)',
+      feature: 'FEAT-005',
       title: isPt
-        ? 'Arquitetura de Autenticacao, Autorizacao (RBAC) e Threat Model'
-        : 'Authentication, Authorization (RBAC) Design, and Threat Model',
+        ? 'Simulacao de Perfis (RBAC) e Explorador Interativo de Threat Model STRIDE'
+        : 'Role-Based Access Control (RBAC) Simulation & STRIDE Threat Model Explorer',
       status: 'Planned',
       completed: false,
       items: isPt
         ? [
-            'Modelagem de ameacas STRIDE para cenarios multi-usuario',
-            'Simulacao de perfis (Secretaria, Docente, Estudante) com controle de acesso',
+            'Simulacao client-side de visoes por perfil (Secretaria, Docente, Estudante)',
+            'Matriz interativa STRIDE conectada aos controles de seguranca do repositorio',
           ]
         : [
-            'Formal STRIDE threat model for multi-user web architecture',
-            'Role-based access control simulation (Registrar, Professor, Student)',
+            'Client-side role simulation (Registrar, Professor, Student personas)',
+            'Interactive STRIDE matrix linked to repository security controls',
           ],
     },
     {
-      version: 'v0.5',
-      feature: 'FEAT-004',
+      version: 'v0.7 (Planned)',
+      feature: 'FEAT-006',
       title: isPt
-        ? 'Atividades Academicas e Simulacao de Avaliacoes Sinteticas'
-        : 'Academic Activities, Assignments, and Synthetic Gradebook',
+        ? 'Importacao em Lote (CSV/JSON) com Validacao de Esquema e Previa de Conflitos'
+        : 'Batch CSV/JSON Import with Schema Validation & Conflict Resolution Preview',
       status: 'Planned',
       completed: false,
       items: isPt
         ? [
-            'Lancamento de atividades demonstrativas e calculo de indicadores',
-            'Relatorios exportaveis e auditoria de regras de aprovacao',
+            'Importador local seguro com deteccao de duplicidades antes da confirmacao',
+            'Relatorio de auditoria de integridade referencial',
           ]
         : [
-            'Synthetic assignment submissions and academic performance indicators',
-            'Exportable audit reports and grading rule verification',
+            'Safe client-side batch importer with duplicate detection preview',
+            'Referential integrity audit report',
           ],
     },
   ];

@@ -2,55 +2,56 @@
 
 ## Document Control
 
-- **Project**: SPECTION Academic Lab
+- **Project**: SPECTION Academic Lab (`v0.5.0`)
 - **Maintainer**: Alexsand Farias de Souza
 - **Related Documents**: [PRD](prd.md), [LLD](lld.md), [ADR Index](adr.md)
 
 ---
 
-## 1. System Context & Dual Implementation Overview
+## 1. System Context & Polyglot Architecture Overview
 
-SPECTION Academic Lab provides two complementary implementations of the same synthetic student registry domain:
+SPECTION Academic Lab provides two synchronized implementations of the synthetic academic domain (`Students`, `Courses`, `Enrollments`, and `Activities`):
 
-1. **Historical Reference Implementation (`FEAT-001`)**: A zero-dependency Python 3 module (`students.py`) backed by SQLite (`:memory:` by default), demonstrating backend/CLI domain modeling and unit testing.
-2. **Web Demonstration Application (`FEAT-WEB-001`)**: A client-side Next.js static web application (`web/`) built with React and TypeScript (`strict` mode), demonstrating interactive UI, design system tokens, privacy-by-design storage adapters, and multi-layered automated testing.
+1. **Python/SQLite Reference Implementation (`FEAT-001`..`FEAT-004`)**: Zero-dependency Python 3 module (`students.py`) backed by SQLite (`:memory:` by default) enforcing relational integrity across `students`, `courses`, `enrollments`, and `activities` tables.
+2. **Next.js Static Web Application (`FEAT-WEB-001`..`FEAT-WEB-004`)**: Client-side web application (`web/`) built with React and TypeScript (`strict` mode) providing interactive management for all four academic modules, real-time analytics, and privacy-by-design storage adapters.
 
 ---
 
-## 2. Historical Python Architecture (FEAT-001)
+## 2. Python Relational Architecture (`FEAT-001`..`FEAT-004`)
 
 ```mermaid
 flowchart LR
-  Demo[Local demo] --> Registry[Registry service]
-  Registry --> SQLite[(SQLite)]
-  Tests[Unit tests] --> Registry
+  Demo[Local CLI / Tests] --> Registry[Registry Service]
+  Registry --> TStudents[(students)]
+  Registry --> TCourses[(courses)]
+  Registry --> TEnroll[(enrollments)]
+  Registry --> TAct[(activities)]
+  TEnroll -->|FK code| TStudents
+  TEnroll -->|FK code| TCourses
+  TAct -->|FK student + course| TEnroll
 ```
-
-Local Python process, registry service, and SQLite persistence boundary. No network, web API, or institution integration. Default database is in memory; optional explicit database path.
 
 ---
 
-## 3. Web Application Architecture (FEAT-WEB-001)
-
-### 3.1 Component & Layer Diagram
+## 3. Web Application Architecture (`FEAT-WEB-001`..`FEAT-WEB-004`)
 
 ```mermaid
 flowchart TB
   subgraph Browser["User Browser (Client-Side Trust Boundary)"]
     subgraph UI["Presentation Layer (Next.js App Router + React)"]
       Shell["AppShell (Sidebar, Header, Footer, Privacy Banner)"]
-      Pages["Views: Dashboard | Students | Engineering & Docs | Roadmap | About | Legal"]
-      State["AcademicLabProvider (React Context State & I18n/Theme)"]
+      Pages["Views: Dashboard | Students | Courses | Enrollments | Activities | Engineering & Docs | Roadmap | About"]
+      State["AcademicLabProvider (Unified Workspace State, I18n EN/PT-BR, Theme)"]
     end
 
     subgraph Domain["Independent Domain Layer (web/lib/domain)"]
-      Validator["Validation & Normalization (DEMO-0001, Name, Course)"]
-      Service["Student Registry Operations (CRUD, Search, Sort, Demo Seed)"]
-      Metrics["Dashboard Calculator & Safe CSV Exporter"]
+      StuDom["students.ts (RF-WEB-001..014)"]
+      AcadDom["academic.ts (Courses RF-WEB-015..018, Enrollments RF-WEB-019..022, Activities RF-WEB-023..026)"]
+      CsvGuard["RFC 4180 + Formula Injection Sanitizer"]
     end
 
     subgraph Storage["Storage Abstraction Layer (web/lib/storage)"]
-      Port["StudentStoragePort Interface"]
+      Port["WorkspaceStoragePort Interface"]
       MemAdapter["MemoryStorageAdapter (Default - Ephemeral)"]
       LocalAdapter["LocalStorageAdapter (Opt-In - Browser localStorage)"]
       PrivacyStore["Privacy Consent Manager"]
@@ -64,37 +65,24 @@ flowchart TB
   GHPages -->|Serves static HTML/CSS/JS| UI
   Pages --> State
   Shell --> State
-  State --> Service
-  State --> Metrics
-  Service --> Validator
+  State --> StuDom
+  State --> AcadDom
+  StuDom --> CsvGuard
+  AcadDom --> CsvGuard
   State --> Port
   Port --> MemAdapter
   Port --> LocalAdapter
   State --> PrivacyStore
 ```
 
-### 3.2 Data Flow
-
-1. **Initial Load**:
-   - Static HTML, CSS, and JS bundles are loaded from GitHub Pages.
-   - `PrivacyConsentManager` checks whether the user has previously made an explicit privacy choice.
-   - If no choice exists (or if the user selected **Essential Only**), the application initializes `MemoryStorageAdapter` (`RNF-WEB-003`).
-   - If the user explicitly authorized local storage (`allowLocalStorage: true`), the application initializes `LocalStorageAdapter` and validates any stored records (`RNF-WEB-004`, `RNF-WEB-006`).
-2. **Student Mutation (Create / Edit / Delete / Seed / Clear)**:
-   - User interacts with `Students` or `Dashboard` components.
-   - Input passes to the pure TypeScript domain layer (`web/lib/domain/students.ts`), which normalizes `code`, validates fields (`RF-WEB-002`..`RF-WEB-004`), and checks for duplicates (`RF-WEB-005`).
-   - On success, the updated record collection is written through the active `StudentStoragePort` adapter and React state updates immediately, recalculating dashboard metrics (`RF-WEB-014`).
-3. **Privacy Revocation**:
-   - When the user revokes local storage permission or selects **Essential Only**, `LocalStorageAdapter.clear()` removes persisted student records from `window.localStorage`, and the active adapter switches back to `MemoryStorageAdapter`.
-
 ---
 
-## 4. Storage Interface Strategy
+## 4. Relational Domain Invariants
 
-The storage subsystem is decoupled from both React components and domain validation rules via `StudentStoragePort`:
-
-- `MemoryStorageAdapter`: Stores records in an isolated JavaScript array in memory. Data lives only for the current browser tab session.
-- `LocalStorageAdapter`: Reads and writes JSON-serialized `Student[]` under a versioned key (`spection_academic_lab_students_v1`), guarded by consent checks, schema validation, and `try/catch` error handling.
+1. **Course Deletion Guard (`RF-WEB-017`)**: A course (`COURSE-01`) cannot be deleted while one or more enrollments reference its `id` or `code`.
+2. **Student Deletion Cascade (`RF-WEB-010`)**: When a student is deleted after explicit confirmation, any enrollments and activities belonging to that student are cleanly removed to prevent orphan records.
+3. **Enrollment Uniqueness (`RF-WEB-021`)**: A student cannot be enrolled twice in the same course during the same academic term (`2026.1`, `2026.2`, `2027.1`).
+4. **Activity Referential & Score Bounds (`RF-WEB-024`, `RF-WEB-025`)**: Every activity (`ACT-0001`) must reference an active/existing enrollment and carry a numeric score between `0` and `100` inclusive.
 
 ---
 
@@ -102,15 +90,7 @@ The storage subsystem is decoupled from both React components and domain validat
 
 | Boundary | Description | Controls Applied |
 |---|---|---|
-| **User Input -> Domain Layer** | Untrusted text entered in forms or search bars. | Trimming, uppercase code normalization, strict regex `^DEMO-[0-9]{4}$`, length bounds (2-80 chars), closed course whitelist, React automatic HTML escaping. |
-| **Domain Layer -> Browser `localStorage`** | Persistence boundary on the local device. | Blocked unless `consent.allowLocalStorage === true`. JSON parsing wrapped in `try/catch` with schema verification per item (`RNF-WEB-006`). |
-| **Domain Layer -> CSV File Export** | Data leaving the browser into spreadsheet tools. | RFC 4180 quote escaping plus formula-prefix neutralization (`'`, `=`, `+`, `-`, `@`, `\t`, `\r`) to prevent CSV Injection (`RF-WEB-013`). |
-| **Browser -> Network** | Static asset delivery from GitHub Pages. | Zero application API calls (`RNF-WEB-005`). No third-party tracking, analytics, or advertising scripts. External author/framework links use `target="_blank" rel="noopener noreferrer"`. |
-
----
-
-## 6. Deployment & Static Publishing Assumptions
-
-- The web application is configured in `web/next.config.mjs` with `output: 'export'` and `images: { unoptimized: true }` (`RNF-WEB-007`).
-- When built in GitHub Actions for GitHub Pages deployment, `NEXT_PUBLIC_BASE_PATH=/spection-academic-lab` configures `basePath` and `assetPrefix` so all routes and assets resolve under `https://alexsandsouza.github.io/spection-academic-lab/`.
-- Deployment only runs after Python unit tests, TypeScript typecheck, Vitest unit/component tests, static export build, and Playwright E2E tests pass in CI.
+| **User Input -> Domain Layer** | Untrusted text/numbers entered in forms or filters. | Trimming, uppercase code normalization (`DEMO-0001`, `COURSE-01`, `ENR-0001`, `ACT-0001`), strict regex patterns, numeric bounds (`15..240` hours, `0..100` scores), React automatic HTML escaping. |
+| **Domain Layer -> Browser `localStorage`** | Persistence boundary on the local device. | Blocked unless `consent.allowLocalStorage === true`. Schema validation per entity on load; `try/catch` fallback to memory (`RNF-WEB-006`). |
+| **Domain Layer -> CSV File Export** | Data exported from Students, Courses, Enrollments, or Activities. | RFC 4180 quote escaping plus formula-prefix neutralization (`'`, `=`, `+`, `-`, `@`, `\t`, `\r`) (`RF-WEB-013`). |
+| **Browser -> Network** | Static asset delivery from GitHub Pages. | Zero application API calls (`RNF-WEB-005`). No third-party tracking or analytics. |

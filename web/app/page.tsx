@@ -13,12 +13,15 @@ import {
   CheckCircle2,
   ShieldCheck,
   FileCheck2,
+  Layers,
+  ClipboardCheck,
 } from 'lucide-react';
 import { useAcademicLab } from '../lib/context/AcademicLabContext';
 import { ENGINEERING_JOURNEY_STAGES } from '../lib/data/engineering';
 
 export default function DashboardPage() {
-  const { students, metrics, storageMode, loadDemoData, t } = useAcademicLab();
+  const { students, metrics, suiteSummary, storageMode, loadDemoData, t } =
+    useAcademicLab();
   const [seedFeedback, setSeedFeedback] = useState<string | null>(null);
 
   const handleLoadDemo = () => {
@@ -97,7 +100,9 @@ export default function DashboardPage() {
           <div className="metric-value" data-testid="metric-courses-value">
             {metrics.totalCoursesRepresented}
           </div>
-          <div className="metric-meta">{t.dashboard.cards.coursesRepresentedMeta}</div>
+          <div className="metric-meta">
+            {suiteSummary.totalCoursesCatalog} {t.dashboard.cards.catalogCourses}
+          </div>
         </article>
 
         <article className="metric-card" data-testid="metric-latest-registration">
@@ -115,7 +120,7 @@ export default function DashboardPage() {
               : t.dashboard.cards.latestRegistrationEmpty}
           </div>
           <div className="metric-meta">
-            {metrics.latestStudent ? metrics.latestStudent.course : 'DEMO-0001..DEMO-9999'}
+            {suiteSummary.totalEnrollments} Enrollments · {suiteSummary.totalActivities} Activities (Avg: {suiteSummary.averageScore})
           </div>
         </article>
 
@@ -148,10 +153,23 @@ export default function DashboardPage() {
               <h3 className="card-title">{t.dashboard.recentTitle}</h3>
               <p className="card-subtitle">{t.dashboard.recentSubtitle}</p>
             </div>
-            <Link href="/students" className="btn btn-secondary btn-sm">
-              <span>{t.dashboard.viewAllStudents}</span>
-              <ArrowRight size={15} aria-hidden="true" />
-            </Link>
+            <div style={{ display: 'flex', gap: '0.45rem', flexWrap: 'wrap' }}>
+              <Link href="/students" className="btn btn-secondary btn-sm">
+                <span>{t.nav.students}</span>
+              </Link>
+              <Link href="/courses" className="btn btn-secondary btn-sm">
+                <BookOpen size={14} aria-hidden="true" />
+                <span>{t.nav.courses}</span>
+              </Link>
+              <Link href="/enrollments" className="btn btn-secondary btn-sm">
+                <Layers size={14} aria-hidden="true" />
+                <span>{t.nav.enrollments}</span>
+              </Link>
+              <Link href="/activities" className="btn btn-secondary btn-sm">
+                <ClipboardCheck size={14} aria-hidden="true" />
+                <span>{t.nav.activities}</span>
+              </Link>
+            </div>
           </div>
 
           {recentStudents.length === 0 ? (
@@ -245,33 +263,33 @@ export default function DashboardPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span>
-                <strong>FEAT-001</strong> - Python 3 &amp; SQLite Student Registry Baseline
+                <strong>FEAT-001..004</strong> - Python 3 &amp; SQLite Relational Registry
               </span>
               <span className="status-badge status-tests-passed">Tests Passed</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span>
-                <strong>FEAT-WEB-001</strong> - Web Application, Dashboard, CRUD &amp; Privacy
+                <strong>FEAT-WEB-001</strong> - Synthetic Students Registry, Search &amp; CSV
               </span>
               <span className="status-badge status-tests-passed">Tests Passed</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span>
-                <strong>FEAT-002 (v0.2)</strong> - Courses &amp; Enrollment Relational Module
+                <strong>FEAT-WEB-002</strong> - Synthetic Courses Catalog &amp; Deletion Guards
               </span>
-              <span className="badge-planned">{t.nav.plannedBadge}</span>
+              <span className="status-badge status-tests-passed">Tests Passed</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span>
-                <strong>FEAT-003 (v0.4)</strong> - Authentication &amp; Authorization Threat Model
+                <strong>FEAT-WEB-003</strong> - Relational Student-Course Enrollments
               </span>
-              <span className="badge-planned">{t.nav.plannedBadge}</span>
+              <span className="status-badge status-tests-passed">Tests Passed</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span>
-                <strong>FEAT-004 (v0.5)</strong> - Academic Activities &amp; Gradebook Sandbox
+                <strong>FEAT-WEB-004</strong> - Academic Activities &amp; Gradebook Analytics
               </span>
-              <span className="badge-planned">{t.nav.plannedBadge}</span>
+              <span className="status-badge status-tests-passed">Tests Passed</span>
             </div>
           </div>
         </section>

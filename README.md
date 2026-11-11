@@ -154,17 +154,18 @@ Every line of code in this repository is backed by reviewable engineering docume
 
 | Capability / Module | Feature ID | Status |
 |---|---|---|
-| Synthetic Student Registry CLI/SQLite (`DEMO-0001`) | `FEAT-001` | Implemented & Tested |
+| Synthetic Student Registry CLI/SQLite (`DEMO-0001`, `COURSE-01`, `ENR`, `ACT`) | `FEAT-001..004` | Implemented & Tested |
 | Academic Dashboard with Live Calculated Indicators & Chart | `FEAT-WEB-001` | Implemented & Tested |
 | Web Student CRUD, Normalization, Validation & Duplicate Prevention | `FEAT-WEB-001` | Implemented & Tested |
-| Instant Search, Course Filter, Multi-Column Sorting & Demo Dataset Loader | `FEAT-WEB-001` | Implemented & Tested |
-| Safe CSV Export (Quote Escaping + Formula Injection Guard) | `FEAT-WEB-001` | Implemented & Tested |
-| Privacy Banner, Memory Default, Opt-In `localStorage` & Revocation | `FEAT-WEB-001` | Implemented & Tested |
-| SPECTION Engineering Journey & Visual Traceability Explorer | `FEAT-WEB-001` | Implemented & Tested |
-| Bilingual UI (`EN` / `PT-BR`) & Theme Switching (`Dark` / `Light`) | `FEAT-WEB-001` | Implemented & Tested |
-| Dedicated Courses & Relational Enrollment Module (`v0.2`) | `FEAT-002` | Planned |
-| Authentication, RBAC Simulation & STRIDE Threat Model (`v0.4`) | `FEAT-003` | Planned |
-| Academic Activities, Assignments & Synthetic Gradebook (`v0.5`) | `FEAT-004` | Planned |
+| Synthetic Courses Catalog (`COURSE-01`), Workload & Referential Deletion Guard | `FEAT-WEB-002` | Implemented & Tested |
+| Relational Student Enrollments (`ENR-0001`) per Academic Term | `FEAT-WEB-003` | Implemented & Tested |
+| Academic Activities & Assessments (`ACT-0001`) with Live Gradebook Average | `FEAT-WEB-004` | Implemented & Tested |
+| Safe CSV Export across all modules (Formula Injection Guard) | `FEAT-WEB-001..004` | Implemented & Tested |
+| Privacy Banner, Memory Default, Opt-In `localStorage` & Revocation | `FEAT-WEB-001..004` | Implemented & Tested |
+| SPECTION Engineering Journey & Visual Traceability Explorer | `FEAT-WEB-001..004` | Implemented & Tested |
+| Bilingual UI (`EN` / `PT-BR`) & Theme Switching (`Dark` / `Light`) | `FEAT-WEB-001..004` | Implemented & Tested |
+| RBAC Persona Simulation & Interactive STRIDE Threat Model (`v0.6`) | `FEAT-005` | Planned |
+| Batch CSV/JSON Import with Schema Validation Preview (`v0.7`) | `FEAT-006` | Planned |
 
 ---
 
@@ -172,10 +173,10 @@ Every line of code in this repository is backed by reviewable engineering docume
 
 All tests are executed in CI (`.github/workflows/academic-lab.yml`) and documented in [docs/evidence.md](docs/evidence.md):
 
-- **Python Unit Tests (`unittest`)**: 5/5 passing (`tests/test_students.py`).
-- **Domain & Storage Unit Tests (`Vitest`)**: 12/12 passing (`web/tests/unit/students.test.ts`, `web/tests/unit/storage.test.ts`).
+- **Python Unit Tests (`unittest`)**: 8/8 passing (`tests/test_students.py`).
+- **Domain & Storage Unit Tests (`Vitest`)**: 16/16 passing (`web/tests/unit/students.test.ts`, `web/tests/unit/academic.test.ts`, `web/tests/unit/storage.test.ts`).
 - **Component Tests (`React Testing Library`)**: 5/5 passing (`web/tests/components/academic-lab.test.tsx`).
-- **Browser End-to-End Tests (`Playwright`)**: 4/4 full user journeys passing (`web/tests/e2e/academic-lab.spec.ts`), including mobile viewport navigation (`docs/screenshots/mobile-view.png`).
+- **Browser End-to-End Tests (`Playwright`)**: 5/5 full user journeys passing (`web/tests/e2e/academic-lab.spec.ts`), including relational flows and mobile viewport navigation (`docs/screenshots/mobile-view.png`).
 
 ---
 

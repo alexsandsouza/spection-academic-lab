@@ -43,6 +43,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   const getPageTitle = () => {
     if (pathname.startsWith('/students')) return t.nav.students;
+    if (pathname.startsWith('/courses')) return t.nav.courses;
+    if (pathname.startsWith('/enrollments')) return t.nav.enrollments;
+    if (pathname.startsWith('/activities')) return t.nav.activities;
     if (pathname.startsWith('/documentation')) return t.nav.documentation;
     if (pathname.startsWith('/roadmap')) return t.nav.roadmap;
     if (pathname.startsWith('/about')) return t.nav.about;
@@ -114,41 +117,41 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </span>
             </Link>
 
-            <div
-              className="nav-item planned"
-              aria-disabled="true"
-              data-testid="nav-planned-courses"
+            <Link
+              href="/courses"
+              onClick={closeMobile}
+              className={`nav-item ${isRouteActive('/courses') ? 'active' : ''}`}
+              data-testid="nav-courses"
             >
               <span className="nav-item-main">
                 <BookOpen size={18} aria-hidden="true" />
                 {!collapsed && <span>{t.nav.courses}</span>}
               </span>
-              {!collapsed && <span className="badge-planned">{t.nav.plannedBadge}</span>}
-            </div>
+            </Link>
 
-            <div
-              className="nav-item planned"
-              aria-disabled="true"
-              data-testid="nav-planned-enrollments"
+            <Link
+              href="/enrollments"
+              onClick={closeMobile}
+              className={`nav-item ${isRouteActive('/enrollments') ? 'active' : ''}`}
+              data-testid="nav-enrollments"
             >
               <span className="nav-item-main">
                 <Layers size={18} aria-hidden="true" />
                 {!collapsed && <span>{t.nav.enrollments}</span>}
               </span>
-              {!collapsed && <span className="badge-planned">{t.nav.plannedBadge}</span>}
-            </div>
+            </Link>
 
-            <div
-              className="nav-item planned"
-              aria-disabled="true"
-              data-testid="nav-planned-activities"
+            <Link
+              href="/activities"
+              onClick={closeMobile}
+              className={`nav-item ${isRouteActive('/activities') ? 'active' : ''}`}
+              data-testid="nav-activities"
             >
               <span className="nav-item-main">
                 <ClipboardCheck size={18} aria-hidden="true" />
                 {!collapsed && <span>{t.nav.activities}</span>}
               </span>
-              {!collapsed && <span className="badge-planned">{t.nav.plannedBadge}</span>}
-            </div>
+            </Link>
 
             {!collapsed && (
               <div className="sidebar-section-label">{t.nav.engineeringGroup}</div>

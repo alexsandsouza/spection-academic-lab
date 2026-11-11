@@ -129,7 +129,38 @@ test.describe('SPECTION Academic Lab End-to-End Verification', () => {
     expect(storedAfterRevoke).toBeNull();
   });
 
-  test('4. Verify Engineering Journey view and mobile navigation drawer', async ({
+  test('4. Verify Courses, Enrollments, and Activities relational workflows', async ({
+    page,
+  }) => {
+    await page.goto('/courses');
+    await page.getByTestId('privacy-essential-btn').click();
+
+    // Register a new synthetic course
+    await page.getByTestId('course-code-input').fill(' course-10 ');
+    await page
+      .getByTestId('course-title-input')
+      .fill('Harness Engineering & Quality Gates');
+    await page.getByTestId('course-workload-input').fill('60');
+    await page.getByTestId('course-submit-btn').click();
+
+    await expect(page.getByTestId('course-row-COURSE-10')).toBeVisible();
+
+    // Load full demo suite and navigate to Enrollments
+    await page.getByTestId('courses-load-demo-btn').click();
+    await expect(page.getByTestId('course-row-COURSE-01')).toBeVisible();
+
+    await page.getByTestId('nav-enrollments').click();
+    await expect(page.getByTestId('enrollment-row-ENR-0001')).toBeVisible();
+
+    // Navigate to Activities and verify synthetic gradebook
+    await page.getByTestId('nav-activities').click();
+    await expect(page.getByTestId('activity-row-ACT-0001')).toBeVisible();
+    await expect(page.getByTestId('activities-average-badge')).toContainText(
+      'Avg Score:'
+    );
+  });
+
+  test('5. Verify Engineering Journey view and mobile navigation drawer', async ({
     page,
   }) => {
     await page.goto('/documentation');
