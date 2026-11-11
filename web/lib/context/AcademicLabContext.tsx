@@ -518,6 +518,7 @@ export function AcademicLabProvider({
     setCourses([]);
     setEnrollments([]);
     setActivities([]);
+    if (typeof window !== "undefined") window.dispatchEvent(new Event("spection-academic-clear"));
     memoryAdapterRef.current.clearStudents();
     if (allowLocalRef.current) {
       localAdapterRef.current.clearStudents();
