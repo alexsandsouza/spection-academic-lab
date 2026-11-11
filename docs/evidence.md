@@ -154,3 +154,22 @@ Running 5 tests using 1 worker
 1. **Synthetic Data Only**: The application enforces `DEMO-0001`, `COURSE-01`, `ENR-0001`, and `ACT-0001` code patterns and defaults to temporary memory (`MemoryStorageAdapter`). Visitors must never enter real personal data.
 2. **Legal Review Requirement**: This project is an open-source educational demonstration and does not claim certified legal compliance with LGPD or GDPR. Any institutional adaptation involving real personal data requires an independent legal, privacy (DPO), and security review.
 3. **Human Release Checkpoint**: All automated checks (8 Python unit tests, 16 Vitest unit tests, 5 RTL component tests, 5 Playwright E2E browser journeys, TypeScript strict check, and Next.js static export build) have been executed and passed.
+
+## FEAT-005 v0.6 - Academic Intelligence verification
+
+GitHub Actions run: https://github.com/alexsandsouza/spection-academic-lab/actions/runs/42953864674
+
+Observed workflow results (commit a152ffcc):
+- Python baseline unit tests: SUCCESS.
+- Node.js dependency installation: SUCCESS.
+- TypeScript strict typecheck: SUCCESS.
+- Vitest unit tests, including domain and privacy tests: SUCCESS.
+- React component tests: SUCCESS.
+- Playwright browser E2E, including attendance creation and consent revocation flows: SUCCESS.
+- Next.js GitHub Pages static export: SUCCESS.
+- Static route check for web/out/progress/index.html: SUCCESS.
+- GitHub Pages deployment job: SUCCESS.
+
+New acceptance artifacts: specs/academic-intelligence-v06.md; tests/unit/progress.test.ts; tests/e2e/academic-lab.spec.ts; web/lib/domain/progress.ts; web/lib/context/AcademicProgressContext.tsx; web/app/progress/page.tsx.
+
+Limitations: This evidence establishes CI success for the specified commit and route, not a third-party security certification or an independent manual accessibility audit. The demo works with fictional records only and is not suitable for real institutional records.
