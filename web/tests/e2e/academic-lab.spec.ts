@@ -4,6 +4,21 @@ import path from 'path';
 const SCREENSHOTS_DIR = path.resolve(__dirname, '../../../docs/screenshots');
 
 test.describe('SPECTION Academic Lab End-to-End Verification', () => {
+  test('FEAT-005: opt-in attendance persists then is purged on consent revocation', async ({ page }) => {
+    await page.goto('/progress');
+    await page.getByTestId('privacy-allow-local-btn').click();
+    await page.getByRole('button', { name: 'Load demo data' }).click();
+    await page.getByLabel('Session title').fill('Persistent fictional lecture');
+    await page.getByRole('button', { name: 'Create session' }).click();
+    await expect(page.getByRole('combobox', { name: 'Select session' })).toContainText('Persistent fictional lecture');
+    await page.reload();
+    await expect(page.getByRole('combobox', { name: 'Select session' })).toContainText('Persistent fictional lecture');
+    await page.getByTestId('footer-privacy-preferences-btn').click();
+    await page.getByTestId('modal-revoke-btn').click();
+    const saved = await page.evaluate(() => localStorage.getItem('spection_academic_lab_progress_v1'));
+    expect(saved).toBeNull();
+  });
+
   test('FEAT-005: attendance session, gradebook view and privacy-first storage', async ({ page }) => {
     await page.goto('/progress');
     await expect(page.getByText('Academic Intelligence').first()).toBeVisible();
