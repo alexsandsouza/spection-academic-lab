@@ -159,11 +159,8 @@ export default function ActivitiesPage() {
         </div>
 
         <form onSubmit={handleSubmit} noValidate>
-          <div
-            className="form-grid"
-            style={{ gridTemplateColumns: '0.9fr 1.4fr 1.4fr 0.8fr 0.8fr 0.9fr auto' }}
-          >
-            <div className="form-field">
+          <div className="form-grid">
+            <div className="form-field form-col-3">
               <label htmlFor="activity-code-input" className="form-label">
                 {t.activities.codeLabel}
               </label>
@@ -179,7 +176,7 @@ export default function ActivitiesPage() {
               <span className="field-hint">{t.activities.codeHint}</span>
             </div>
 
-            <div className="form-field">
+            <div className="form-field form-col-4">
               <label htmlFor="activity-enrollment-select" className="form-label">
                 {t.activities.enrollmentLabel}
               </label>
@@ -199,7 +196,7 @@ export default function ActivitiesPage() {
               </select>
             </div>
 
-            <div className="form-field">
+            <div className="form-field form-col-5">
               <label htmlFor="activity-title-input" className="form-label">
                 {t.activities.titleLabel}
               </label>
@@ -214,7 +211,7 @@ export default function ActivitiesPage() {
               />
             </div>
 
-            <div className="form-field">
+            <div className="form-field form-col-3">
               <label htmlFor="activity-category-select" className="form-label">
                 {t.activities.categoryLabel}
               </label>
@@ -233,7 +230,7 @@ export default function ActivitiesPage() {
               </select>
             </div>
 
-            <div className="form-field">
+            <div className="form-field form-col-3">
               <label htmlFor="activity-score-input" className="form-label">
                 {t.activities.scoreLabel}
               </label>
@@ -249,7 +246,7 @@ export default function ActivitiesPage() {
               />
             </div>
 
-            <div className="form-field">
+            <div className="form-field form-col-3">
               <label htmlFor="activity-status-select" className="form-label">
                 {t.activities.statusLabel}
               </label>
@@ -268,18 +265,11 @@ export default function ActivitiesPage() {
               </select>
             </div>
 
-            <div
-              className="form-field"
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingTop: '1.45rem',
-              }}
-            >
+            <div className="form-field form-col-3 form-actions-cell">
               <button
                 type="submit"
                 className="btn btn-primary"
+                style={{ width: '100%', height: '42px' }}
                 data-testid="activity-submit-btn"
               >
                 <Save size={16} aria-hidden="true" />
@@ -387,26 +377,32 @@ export default function ActivitiesPage() {
               <tbody>
                 {filteredActivities.map((act) => (
                   <tr key={act.id} data-testid={`activity-row-${act.code}`}>
-                    <td>
+                    <td className="cell-nowrap">
                       <span className="code-pill">{act.code}</span>
                     </td>
                     <td>{act.title}</td>
                     <td>
-                      <strong>{act.studentCode}</strong> - {act.studentName}
+                      <div className="cell-entity">
+                        <span className="cell-entity-code">{act.studentCode}</span>
+                        <span className="cell-entity-name">{act.studentName}</span>
+                      </div>
                     </td>
                     <td>
-                      <strong>{act.courseCode}</strong> - {act.courseTitle}
+                      <div className="cell-entity">
+                        <span className="cell-entity-code">{act.courseCode}</span>
+                        <span className="cell-entity-name">{act.courseTitle}</span>
+                      </div>
                     </td>
-                    <td>
+                    <td className="cell-nowrap">
                       <span className="course-pill">{act.category}</span>
                     </td>
-                    <td>
+                    <td className="cell-nowrap">
                       <strong>{act.score}</strong> / {act.maxScore}
                     </td>
-                    <td>
+                    <td className="cell-nowrap">
                       <select
                         className="form-select"
-                        style={{ padding: '0.28rem 0.5rem', fontSize: '0.8rem', width: 'auto' }}
+                        style={{ height: '34px', lineHeight: '32px', padding: '0 0.55rem', fontSize: '0.8rem', width: '132px' }}
                         aria-label={`Status for ${act.code}`}
                         value={act.status}
                         onChange={(e) => {
@@ -426,7 +422,7 @@ export default function ActivitiesPage() {
                         ))}
                       </select>
                     </td>
-                    <td>
+                    <td className="cell-nowrap">
                       <button
                         type="button"
                         className="btn btn-danger btn-sm"

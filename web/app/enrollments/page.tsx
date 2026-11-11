@@ -153,11 +153,8 @@ export default function EnrollmentsPage() {
         </div>
 
         <form onSubmit={handleSubmit} noValidate>
-          <div
-            className="form-grid"
-            style={{ gridTemplateColumns: '0.9fr 1.3fr 1.3fr 0.8fr 0.9fr auto' }}
-          >
-            <div className="form-field">
+          <div className="form-grid">
+            <div className="form-field form-col-2">
               <label htmlFor="enrollment-code-input" className="form-label">
                 {t.enrollments.codeLabel}
               </label>
@@ -173,7 +170,7 @@ export default function EnrollmentsPage() {
               <span className="field-hint">{t.enrollments.codeHint}</span>
             </div>
 
-            <div className="form-field">
+            <div className="form-field form-col-3">
               <label htmlFor="enrollment-student-select" className="form-label">
                 {t.enrollments.studentLabel}
               </label>
@@ -193,7 +190,7 @@ export default function EnrollmentsPage() {
               </select>
             </div>
 
-            <div className="form-field">
+            <div className="form-field form-col-3">
               <label htmlFor="enrollment-course-select" className="form-label">
                 {t.enrollments.courseLabel}
               </label>
@@ -213,7 +210,7 @@ export default function EnrollmentsPage() {
               </select>
             </div>
 
-            <div className="form-field">
+            <div className="form-field form-col-2">
               <label htmlFor="enrollment-term-select" className="form-label">
                 {t.enrollments.termLabel}
               </label>
@@ -232,7 +229,7 @@ export default function EnrollmentsPage() {
               </select>
             </div>
 
-            <div className="form-field">
+            <div className="form-field form-col-2">
               <label htmlFor="enrollment-status-select" className="form-label">
                 {t.enrollments.statusLabel}
               </label>
@@ -251,18 +248,11 @@ export default function EnrollmentsPage() {
               </select>
             </div>
 
-            <div
-              className="form-field"
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingTop: '1.45rem',
-              }}
-            >
+            <div className="form-field form-col-12" style={{ gridColumn: 'span 12', display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', paddingTop: '0.25rem' }}>
               <button
                 type="submit"
                 className="btn btn-primary"
+                style={{ height: '42px', minWidth: '180px' }}
                 data-testid="enrollment-submit-btn"
               >
                 <Save size={16} aria-hidden="true" />
@@ -368,20 +358,26 @@ export default function EnrollmentsPage() {
               <tbody>
                 {filteredEnrollments.map((enr) => (
                   <tr key={enr.id} data-testid={`enrollment-row-${enr.code}`}>
-                    <td>
+                    <td className="cell-nowrap">
                       <span className="code-pill">{enr.code}</span>
                     </td>
                     <td>
-                      <strong>{enr.studentCode}</strong> - {enr.studentName}
+                      <div className="cell-entity">
+                        <span className="cell-entity-code">{enr.studentCode}</span>
+                        <span className="cell-entity-name">{enr.studentName}</span>
+                      </div>
                     </td>
                     <td>
-                      <strong>{enr.courseCode}</strong> - {enr.courseTitle}
+                      <div className="cell-entity">
+                        <span className="cell-entity-code">{enr.courseCode}</span>
+                        <span className="cell-entity-name">{enr.courseTitle}</span>
+                      </div>
                     </td>
-                    <td>{enr.term}</td>
-                    <td>
+                    <td className="cell-nowrap">{enr.term}</td>
+                    <td className="cell-nowrap">
                       <select
                         className="form-select"
-                        style={{ padding: '0.28rem 0.5rem', fontSize: '0.8rem', width: 'auto' }}
+                        style={{ height: '34px', lineHeight: '32px', padding: '0 0.55rem', fontSize: '0.8rem', width: '132px' }}
                         aria-label={`Status for ${enr.code}`}
                         value={enr.status}
                         onChange={(e) => {
@@ -400,7 +396,7 @@ export default function EnrollmentsPage() {
                         ))}
                       </select>
                     </td>
-                    <td>
+                    <td className="cell-nowrap">
                       <button
                         type="button"
                         className="btn btn-danger btn-sm"

@@ -158,6 +158,11 @@ test.describe('SPECTION Academic Lab End-to-End Verification', () => {
     await expect(page.getByTestId('activities-average-badge')).toContainText(
       'Avg Score:'
     );
+
+    await page.screenshot({
+      path: path.join(SCREENSHOTS_DIR, 'activities-aligned.png'),
+      fullPage: true,
+    });
   });
 
   test('5. Verify Engineering Journey view and mobile navigation drawer', async ({

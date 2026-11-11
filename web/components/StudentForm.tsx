@@ -86,7 +86,7 @@ export function StudentForm({
   return (
     <form onSubmit={handleSubmit} noValidate aria-label={editingStudent ? t.students.formEditTitle : t.students.formCreateTitle}>
       <div className="form-grid">
-        <div className="form-field">
+        <div className="form-field form-col-3">
           <label htmlFor="student-code-input" className="form-label">
             {t.students.codeLabel}
           </label>
@@ -117,7 +117,7 @@ export function StudentForm({
           )}
         </div>
 
-        <div className="form-field">
+        <div className="form-field form-col-4">
           <label htmlFor="student-name-input" className="form-label">
             {t.students.nameLabel}
           </label>
@@ -148,7 +148,7 @@ export function StudentForm({
           )}
         </div>
 
-        <div className="form-field">
+        <div className="form-field form-col-3">
           <label htmlFor="student-course-select" className="form-label">
             {t.students.courseLabel}
           </label>
@@ -181,19 +181,11 @@ export function StudentForm({
           )}
         </div>
 
-        <div
-          className="form-field"
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: '0.5rem',
-            paddingTop: '1.45rem',
-          }}
-        >
+        <div className="form-field form-col-2 form-actions-cell">
           <button
             type="submit"
             className="btn btn-primary"
+            style={{ height: '42px' }}
             data-testid="student-submit-btn"
           >
             <Save size={16} aria-hidden="true" />
@@ -203,6 +195,7 @@ export function StudentForm({
             <button
               type="button"
               className="btn btn-secondary"
+              style={{ height: '42px' }}
               onClick={onCancelEdit}
               data-testid="student-cancel-edit-btn"
             >

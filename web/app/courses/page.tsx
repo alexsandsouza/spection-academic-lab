@@ -178,11 +178,8 @@ export default function CoursesPage() {
         </div>
 
         <form onSubmit={handleSubmit} noValidate>
-          <div
-            className="form-grid"
-            style={{ gridTemplateColumns: '1fr 1.6fr 1.3fr 0.9fr auto' }}
-          >
-            <div className="form-field">
+          <div className="form-grid">
+            <div className="form-field form-col-2">
               <label htmlFor="course-code-input" className="form-label">
                 {t.courses.codeLabel}
               </label>
@@ -198,7 +195,7 @@ export default function CoursesPage() {
               <span className="field-hint">{t.courses.codeHint}</span>
             </div>
 
-            <div className="form-field">
+            <div className="form-field form-col-4">
               <label htmlFor="course-title-input" className="form-label">
                 {t.courses.titleLabel}
               </label>
@@ -214,7 +211,7 @@ export default function CoursesPage() {
               <span className="field-hint">{t.courses.titleHint}</span>
             </div>
 
-            <div className="form-field">
+            <div className="form-field form-col-2">
               <label htmlFor="course-program-select" className="form-label">
                 {t.courses.programLabel}
               </label>
@@ -233,7 +230,7 @@ export default function CoursesPage() {
               </select>
             </div>
 
-            <div className="form-field">
+            <div className="form-field form-col-2">
               <label htmlFor="course-workload-input" className="form-label">
                 {t.courses.workloadLabel}
               </label>
@@ -250,19 +247,11 @@ export default function CoursesPage() {
               <span className="field-hint">{t.courses.workloadHint}</span>
             </div>
 
-            <div
-              className="form-field"
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: '0.5rem',
-                paddingTop: '1.45rem',
-              }}
-            >
+            <div className="form-field form-col-2 form-actions-cell">
               <button
                 type="submit"
                 className="btn btn-primary"
+                style={{ height: '42px' }}
                 data-testid="course-submit-btn"
               >
                 <Save size={16} aria-hidden="true" />
@@ -272,6 +261,7 @@ export default function CoursesPage() {
                 <button
                   type="button"
                   className="btn btn-secondary"
+                  style={{ height: '42px' }}
                   onClick={resetForm}
                 >
                   <XCircle size={16} aria-hidden="true" />
