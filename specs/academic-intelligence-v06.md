@@ -1,6 +1,6 @@
 # FEAT-005 - Academic Intelligence v0.6
 
-Status: IMPLEMENTED IN SOURCE - build/deploy and human acceptance pending.
+Status: IMPLEMENTED AND CI VERIFIED - human visual and acceptance review pending. Automated validation: GitHub Actions run 42953864674, including typecheck, Python, Vitest, Playwright, build and GitHub Pages deploy.
 
 ## Product Brief
 Extend the delivered v0.5 synthetic academic system with attendance, weighted grades and a read-only transcript. The educational objective is to demonstrate implementation driven by specification, domain invariants, testing and traceable evidence. No real student data or official grades.
