@@ -42,7 +42,7 @@ export const DICTIONARIES = {
       privacyPreferences: 'Privacy Preferences',
     },
     dashboard: {
-      kicker: 'SPECTION Academic Lab - v0.5.0 Complete Academic Suite',
+      kicker: 'SPECTION Academic Lab - v0.6.0 Academic Intelligence',
       heroTitle: 'Spec-Driven Academic Demonstration Environment',
       heroDescription:
         'Explore a complete, tested software system built with the SPECTION Framework. Manage synthetic students, courses, relational enrollments, and graded activities while auditing every requirement from Product Brief to Release Evidence.',
@@ -313,7 +313,7 @@ export const DICTIONARIES = {
       privacyPreferences: 'Preferencias de Privacidade',
     },
     dashboard: {
-      kicker: 'SPECTION Academic Lab - v0.5.0 Suite Academica Completa',
+      kicker: 'SPECTION Academic Lab - v0.6.0 Inteligência Acadêmica',
       heroTitle: 'Ambiente Academico Demonstrativo Orientado por Especificacoes',
       heroDescription:
         'Experimente um sistema funcional completo construido com o SPECTION Framework. Gerencie estudantes ficticios, disciplinas, matriculas relacionais e atividades avaliativas com rastreabilidade total do Product Brief ate as evidencias de testes.',
