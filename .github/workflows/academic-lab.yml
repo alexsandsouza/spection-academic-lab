@@ -1,16 +1,102 @@
-name: Academic Lab tests
+name: Academic Lab CI and GitHub Pages
+
 on:
   push:
+    branches: [main]
   pull_request:
+    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
+
+concurrency:
+  group: 'pages-${{ github.ref }}'
+  cancel-in-progress: false
+
 jobs:
-  test:
+  quality-gate:
+    name: Quality Gate (Python, TypeScript, Vitest, Build, Playwright)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Run feature tests
+
+      - name: Run Python baseline unit tests (FEAT-001)
         run: python -m unittest discover -s tests -v
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install web dependencies (npm ci)
+        working-directory: web
+        run: npm ci
+
+      - name: Run TypeScript strict typecheck
+        working-directory: web
+        run: npm run typecheck
+
+      - name: Run Vitest unit tests
+        working-directory: web
+        run: npm run test:unit
+
+      - name: Run React Testing Library component tests
+        working-directory: web
+        run: npm run test:components
+
+      - name: Install Playwright Chromium browser
+        working-directory: web
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright E2E browser tests
+        working-directory: web
+        run: npm run test:e2e
+
+      - name: Build static export for GitHub Pages
+        working-directory: web
+        env:
+          NEXT_PUBLIC_BASE_PATH: /spection-academic-lab
+        run: npm run build
+
+      - name: Upload Playwright report and test logs artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: academic-lab-test-evidence
+          path: |
+            web/playwright-report/
+            web/test-results/
+            docs/evidence.md
+          retention-days: 14
+
+      - name: Upload GitHub Pages static artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/out
+
+  deploy-pages:
+    name: Deploy to GitHub Pages
+    needs: quality-gate
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy static export to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

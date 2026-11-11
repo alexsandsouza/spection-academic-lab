@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.db
+
+# Web / Node
+web/node_modules/
+web/.next/
+web/out/
+web/coverage/
+web/test-results/
+web/playwright-report/
+web/blob-report/
+web/ playwright/.cache/
+web/next-env.d.ts
+*.tsbuildinfo

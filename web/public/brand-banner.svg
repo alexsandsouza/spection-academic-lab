@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" fill="none">
+  <defs>
+    <linearGradient id="bannerBg" x1="0" y1="0" x2="1200" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#050B18" />
+      <stop offset="50%" stop-color="#0B162C" />
+      <stop offset="100%" stop-color="#17153B" />
+    </linearGradient>
+    <linearGradient id="cyanViolet" x1="0" y1="0" x2="400" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="55%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1E293B" stroke-width="1" stroke-opacity="0.55" />
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="320" rx="24" fill="url(#bannerBg)" />
+  <rect width="1200" height="320" rx="24" fill="url(#grid)" />
+  <rect x="2" y="2" width="1196" height="316" rx="22" stroke="url(#cyanViolet)" stroke-opacity="0.4" stroke-width="2" />
+
+  <circle cx="1060" cy="80" r="180" fill="#06B6D4" fill-opacity="0.08" />
+  <circle cx="940" cy="240" r="150" fill="#8B5CF6" fill-opacity="0.1" />
+
+  <g transform="translate(72, 68)">
+    <rect width="128" height="128" rx="28" fill="#0B1730" stroke="url(#cyanViolet)" stroke-width="2.5" />
+    <path d="M64 26L22 47L64 68L106 47L64 26Z" fill="url(#cyanViolet)" />
+    <path d="M38 59V82C38 89 49.6 97 64 97C78.4 97 90 89 90 82V59L64 72L38 59Z" fill="#06B6D4" fill-opacity="0.22" stroke="#22D3EE" stroke-width="3.2" stroke-linejoin="round" />
+    <path d="M102 49V78" stroke="#A78BFA" stroke-width="4" stroke-linecap="round" />
+    <circle cx="102" cy="83" r="4.5" fill="#22D3EE" />
+  </g>
+
+  <g transform="translate(232, 86)">
+    <rect x="0" y="0" width="286" height="30" rx="15" fill="#0E2342" stroke="#06B6D4" stroke-opacity="0.5" />
+    <circle cx="18" cy="15" r="5" fill="#22D3EE" />
+    <text x="34" y="20" fill="#67E8F9" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" letter-spacing="1.4">SPECTION OFFICIAL REFERENCE LAB</text>
+
+    <text x="0" y="78" fill="#F8FAFC" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="46" font-weight="800" letter-spacing="-0.8">SPECTION Academic Lab</text>
+    <text x="0" y="116" fill="#94A3B8" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="20" font-weight="400">Spec-Driven Development, Harness Engineering, Quality Gates &amp; Verifiable Evidence</text>
+
+    <g transform="translate(0, 140)">
+      <rect x="0" y="0" width="144" height="32" rx="8" fill="#111C35" stroke="#334155" />
+      <text x="72" y="21" text-anchor="middle" fill="#38BDF8" font-family="monospace" font-size="13" font-weight="600">FEAT-001 Python</text>
+
+      <rect x="158" y="0" width="168" height="32" rx="8" fill="#111C35" stroke="#334155" />
+      <text x="242" y="21" text-anchor="middle" fill="#A78BFA" font-family="monospace" font-size="13" font-weight="600">FEAT-WEB-001 Next.js</text>
+
+      <rect x="340" y="0" width="188" height="32" rx="8" fill="#111C35" stroke="#334155" />
+      <text x="434" y="21" text-anchor="middle" fill="#34D399" font-family="monospace" font-size="13" font-weight="600">Privacy by Design</text>
+
+      <rect x="542" y="0" width="176" height="32" rx="8" fill="#111C35" stroke="#334155" />
+      <text x="630" y="21" text-anchor="middle" fill="#F8FAFC" font-family="monospace" font-size="13" font-weight="600">100% Traceable</text>
+    </g>
+  </g>
+</svg>
