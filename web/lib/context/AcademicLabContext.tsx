@@ -268,6 +268,7 @@ export function AcademicLabProvider({
         enrollments.filter((e) => e.studentId === id).map((e) => e.id)
       );
       const nextEnrollments = enrollments.filter((e) => e.studentId !== id);
+      if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("spection-progress-remove-enrollments",{detail:[...removedEnrollmentIds]}));
       const nextActivities = activities.filter(
         (a) => !removedEnrollmentIds.has(a.enrollmentId)
       );
@@ -350,6 +351,7 @@ export function AcademicLabProvider({
     (id: string): AcademicMutationResult<null> => {
       try {
         const nextCourses = deleteCourseRecord(courses, enrollments, id);
+        if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("spection-progress-remove-course",{detail:id}));
         setCourses(nextCourses);
         persistWorkspace(students, {
           courses: nextCourses,
@@ -417,6 +419,7 @@ export function AcademicLabProvider({
   const removeEnrollment = useCallback(
     (id: string) => {
       const nextEnrollments = enrollments.filter((e) => e.id !== id);
+      if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("spection-progress-remove-enrollments",{detail:[id]}));
       const nextActivities = activities.filter((a) => a.enrollmentId !== id);
       setEnrollments(nextEnrollments);
       setActivities(nextActivities);
