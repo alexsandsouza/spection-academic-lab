@@ -51,6 +51,7 @@ export const STORAGE_KEYS = {
   COURSES: 'spection_academic_lab_courses_v1',
   ENROLLMENTS: 'spection_academic_lab_enrollments_v1',
   ACTIVITIES: 'spection_academic_lab_activities_v1',
+  PROGRESS: 'spection_academic_lab_progress_v1',
   CONSENT: 'spection_academic_lab_privacy_consent_v1',
 } as const;
 
@@ -327,6 +328,7 @@ export class LocalStorageAdapter implements StudentStoragePort {
         storage.removeItem(STORAGE_KEYS.COURSES);
         storage.removeItem(STORAGE_KEYS.ENROLLMENTS);
         storage.removeItem(STORAGE_KEYS.ACTIVITIES);
+        storage.removeItem(STORAGE_KEYS.PROGRESS);
       }
       return { ok: true };
     } catch {
@@ -392,6 +394,7 @@ export function savePrivacyConsent(
       storage.removeItem(STORAGE_KEYS.COURSES);
       storage.removeItem(STORAGE_KEYS.ENROLLMENTS);
       storage.removeItem(STORAGE_KEYS.ACTIVITIES);
+        storage.removeItem(STORAGE_KEYS.PROGRESS);
     }
     storage.setItem(STORAGE_KEYS.CONSENT, JSON.stringify(nextState));
     return { state: nextState };
@@ -417,6 +420,7 @@ export function revokePrivacyConsentAndPurge(
       storage.removeItem(STORAGE_KEYS.COURSES);
       storage.removeItem(STORAGE_KEYS.ENROLLMENTS);
       storage.removeItem(STORAGE_KEYS.ACTIVITIES);
+        storage.removeItem(STORAGE_KEYS.PROGRESS);
       storage.setItem(STORAGE_KEYS.CONSENT, JSON.stringify(nextState));
     }
     return { state: nextState };
