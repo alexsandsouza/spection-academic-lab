@@ -8,6 +8,7 @@ import {
   Users,
   BookOpen,
   ClipboardCheck,
+  ChartNoAxesCombined,
   FileCode2,
   Map,
   Info,
@@ -46,6 +47,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     if (pathname.startsWith('/courses')) return t.nav.courses;
     if (pathname.startsWith('/enrollments')) return t.nav.enrollments;
     if (pathname.startsWith('/activities')) return t.nav.activities;
+    if (pathname.startsWith('/progress')) return locale === 'pt' ? 'Inteligência Acadêmica' : 'Academic Intelligence';
     if (pathname.startsWith('/documentation')) return t.nav.documentation;
     if (pathname.startsWith('/roadmap')) return t.nav.roadmap;
     if (pathname.startsWith('/about')) return t.nav.about;
@@ -150,6 +152,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <span className="nav-item-main">
                 <ClipboardCheck size={18} aria-hidden="true" />
                 {!collapsed && <span>{t.nav.activities}</span>}
+              </span>
+            </Link>
+
+            <Link
+              href="/progress"
+              onClick={closeMobile}
+              className={`nav-item ${isRouteActive('/progress') ? 'active' : ''}`}
+              data-testid="nav-progress"
+            >
+              <span className="nav-item-main">
+                <ChartNoAxesCombined size={18} aria-hidden="true" />
+                {!collapsed && <span>{locale === 'pt' ? 'Inteligência Acadêmica' : 'Academic Intelligence'}</span>}
               </span>
             </Link>
 
