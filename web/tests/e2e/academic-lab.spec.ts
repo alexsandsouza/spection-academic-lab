@@ -11,7 +11,7 @@ test.describe('SPECTION Academic Lab End-to-End Verification', () => {
     await page.getByRole('button', { name: 'Load demo data' }).click();
     await page.getByLabel('Session title').fill('Synthetic lecture 01');
     await page.getByRole('button', { name: 'Create session' }).click();
-    await expect(page.getByText('Synthetic lecture 01')).toBeVisible();
+    await expect(page.getByRole('combobox', { name: 'Select session' })).toContainText('Synthetic lecture 01');
     await page.getByRole('combobox', { name: 'ENR-0001' }).selectOption('yes');
     await expect(page.getByRole('combobox', { name: 'ENR-0001' })).toHaveValue('yes');
     await expect(page.getByText('Synthetic academic transcript')).toBeVisible();
