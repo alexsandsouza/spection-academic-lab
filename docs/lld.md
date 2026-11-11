@@ -101,3 +101,15 @@ When `consent.allowLocalStorage === true`, `LocalStorageAdapter` persists and va
 - `spection_academic_lab_activities_v1`
 
 When `consent.allowLocalStorage === false` (default on first visit or after revocation), all four keys are removed from `window.localStorage` and kept exclusively in `MemoryStorageAdapter`.
+
+
+## FEAT-005 - Academic Intelligence LLD
+
+- AttendanceSession: id, courseId, term, date, title.
+- AttendanceRecord: sessionId + enrollmentId unique composite, present boolean. Correction replaces one record.
+- GradeWeights: integer EXAM/PROJECT/LAB/QUIZ percentages that sum to 100.
+- weightedGrade: returns null unless every positive-weight category has at least one GRADED activity. Scores are normalized to existing 0-100 scale; result rounds to one decimal place.
+- attendanceRate: returns null for zero eligible sessions, otherwise counts present records / eligible sessions as a percentage.
+- transcript: derived read projection of existing enrollments and activities plus sessions/records; no official academic validity.
+- AcademicProgressContext: context state, browser memory by default, localStorage after consent. Existing AcademicLabContext remains source of truth for enrollment and activity relations.
+- Privacy purge: STORAGE_KEYS.PROGRESS is deleted by savePrivacyConsent(false), revokePrivacyConsentAndPurge() and clearStudents().
