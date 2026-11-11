@@ -50,9 +50,9 @@ export function AcademicProgressProvider({children}:{children:React.ReactNode}){
   window.addEventListener('spection-academic-clear',clear);
   return()=>window.removeEventListener('spection-academic-clear',clear);
  },[]);
- const addAttendanceSession=(input:AttendanceSession)=>setData(prev=>({...prev,sessions:addSession(prev.sessions,courses,input)}));
- const recordAttendance=(sessionId:string,enrollmentId:string,present:boolean)=>setData(prev=>({...prev,records:setAttendance(prev.records,prev.sessions,enrollments,sessionId,enrollmentId,present)}));
- const changeWeights=(weights:GradeWeights)=>setData(prev=>({...prev,weights:validateWeights(weights)}));
+ const addAttendanceSession=(input:AttendanceSession)=>{const sessions=addSession(data.sessions,courses,input);setData(prev=>({...prev,sessions}))};
+ const recordAttendance=(sessionId:string,enrollmentId:string,present:boolean)=>{const records=setAttendance(data.records,data.sessions,enrollments,sessionId,enrollmentId,present);setData(prev=>({...prev,records}))};
+ const changeWeights=(weights:GradeWeights)=>{const validated=validateWeights(weights);setData(prev=>({...prev,weights:validated}))};
  const clearProgress=()=>setData(empty());
  const validEnrollments=useMemo(()=>enrollments.filter(e=>e.status!=='DROPPED'),[enrollments]);
  const report=useMemo(()=>transcript(validEnrollments,activities,data.sessions.filter(s=>courses.some(c=>c.id===s.courseId)),data.records,data.weights),[validEnrollments,activities,data,courses]);
