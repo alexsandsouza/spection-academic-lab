@@ -164,7 +164,7 @@ Every line of code in this repository is backed by reviewable engineering docume
 | Privacy Banner, Memory Default, Opt-In `localStorage` & Revocation | `FEAT-WEB-001..004` | Implemented & Tested |
 | SPECTION Engineering Journey & Visual Traceability Explorer | `FEAT-WEB-001..004` | Implemented & Tested |
 | Bilingual UI (`EN` / `PT-BR`) & Theme Switching (`Dark` / `Light`) | `FEAT-WEB-001..004` | Implemented & Tested |
-| Attendance, weighted grades & synthetic transcript (`v0.6`) | `FEAT-005` | Implemented in source - CI / review pending |
+| Attendance, weighted grades & synthetic transcript (`v0.6`) | `FEAT-005` | Implemented & CI verified - Human review pending |
 | Consolidated reports, PDF & validated JSON/CSV imports (`v0.7`) | `FEAT-006` | Planned |\n| Simulated RBAC personas & STRIDE model (`v0.8`) | `FEAT-007` | Planned |\n| Optional API/PostgreSQL architecture (`v0.9`) | `FEAT-008` | Planned |\n| Verified release and accessibility (`v1.0`) | `FEAT-009` | Planned |\n| Optional human-reviewed AI activity assistant (`v1.1`) | `FEAT-010` | Exploratory |
 
 ---
