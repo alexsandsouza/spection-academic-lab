@@ -54,7 +54,7 @@ export default function RoadmapPage() {
           ],
     },
     {
-      version: 'v0.5 (Current)',
+      version: 'v0.5 (Baseline)',
       feature: 'FEAT-WEB-002..004',
       title: isPt
         ? 'Suite Academica Relacional: Disciplinas, Matriculas e Atividades Avaliativas'
@@ -76,12 +76,12 @@ export default function RoadmapPage() {
           ],
     },
     {
-      version: "v0.6 (Source implemented)",
+      version: "v0.6 (Current)",
       feature: "FEAT-005",
       title: isPt ? "Inteligência Acadêmica: Frequência, Notas e Boletim" : "Academic Intelligence: Attendance, Grades & Transcript",
-      status: "Source Implemented - Verification Pending",
+      status: "CI Verified - Human Review Pending",
       completed: false,
-      items: isPt ? ["Cadastro de aulas e registro de presença fictícia","Médias ponderadas e boletim de demonstração","Testes e liberação sujeitos à validação no CI"] : ["Attendance sessions and synthetic presence records","Weighted grades and demonstration transcript","CI and release review pending"],
+      items: isPt ? ["Cadastro de aulas e registro de presença fictícia","Médias ponderadas e boletim de demonstração","CI aprovado; revisão humana pendente"] : ["Attendance sessions and synthetic presence records","Weighted grades and demonstration transcript","CI passed; human review pending"],
     },
     {
       version: "v0.7 (Planned)",
