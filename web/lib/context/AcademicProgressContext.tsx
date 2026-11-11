@@ -47,8 +47,26 @@ export function AcademicProgressProvider({children}:{children:React.ReactNode}){
  },[data,ready,consent.allowLocalStorage]);
  useEffect(()=>{
   const clear=()=>setData(empty());
+  const removeEnrollments=(ev:Event)=>{
+   const ids=new Set((ev as CustomEvent<string[]>).detail||[]);
+   setData(prev=>({...prev,records:prev.records.filter(r=>!ids.has(r.enrollmentId))}));
+  };
+  const removeCourse=(ev:Event)=>{
+   const courseId=(ev as CustomEvent<string>).detail;
+   setData(prev=>{
+    const removed=prev.sessions.filter(s=>s.courseId===courseId);
+    const sessionIds=new Set(removed.map(s=>s.id));
+    return {...prev,sessions:prev.sessions.filter(s=>s.courseId!==courseId),records:prev.records.filter(r=>!sessionIds.has(r.sessionId))};
+   });
+  };
   window.addEventListener('spection-academic-clear',clear);
-  return()=>window.removeEventListener('spection-academic-clear',clear);
+  window.addEventListener('spection-progress-remove-enrollments',removeEnrollments);
+  window.addEventListener('spection-progress-remove-course',removeCourse);
+  return()=>{
+   window.removeEventListener('spection-academic-clear',clear);
+   window.removeEventListener('spection-progress-remove-enrollments',removeEnrollments);
+   window.removeEventListener('spection-progress-remove-course',removeCourse);
+  };
  },[]);
  const addAttendanceSession=(input:AttendanceSession)=>{const sessions=addSession(data.sessions,courses,input);setData(prev=>({...prev,sessions}))};
  const recordAttendance=(sessionId:string,enrollmentId:string,present:boolean)=>{const records=setAttendance(data.records,data.sessions,enrollments,sessionId,enrollmentId,present);setData(prev=>({...prev,records}))};
