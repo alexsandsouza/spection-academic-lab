@@ -15,6 +15,7 @@ import {
   FileCheck2,
   Layers,
   ClipboardCheck,
+  ChartNoAxesCombined,
 } from 'lucide-react';
 import { useAcademicLab } from '../lib/context/AcademicLabContext';
 import { ENGINEERING_JOURNEY_STAGES } from '../lib/data/engineering';
@@ -79,6 +80,15 @@ export default function DashboardPage() {
           <span>{seedFeedback}</span>
         </div>
       )}
+
+      <section className="progress-launch-card" aria-label="Academic Intelligence">
+        <div>
+          <span className="progress-eyebrow">SPECTION / FEAT-005 / v0.6</span>
+          <h3>{t.nav.overview === 'Overview' ? 'Academic Intelligence' : 'Inteligência Acadêmica'}</h3>
+          <p>{t.nav.overview === 'Overview' ? 'Explore attendance sessions, weighted grades and synthetic student progress with traceable rules.' : 'Explore frequência, notas ponderadas e boletins fictícios, com regras de negócio rastreáveis.'}</p>
+        </div>
+        <Link href="/progress" className="btn btn-primary" data-testid="dashboard-progress-link"><ChartNoAxesCombined size={17}/>{t.nav.overview === 'Overview' ? 'Open Academic Intelligence' : 'Acessar Inteligência Acadêmica'}<ArrowRight size={16}/></Link>
+      </section>
 
       <section className="metrics-grid" aria-label="Academic Dashboard Indicators">
         <article className="metric-card" data-testid="metric-total-students">
