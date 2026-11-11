@@ -25,3 +25,14 @@ This document preserves the original ADR-0001 record and indexes all Architectur
 | [ADR-0005](adr/0005-no-auth-or-backend-v1.md) | Client-Only Architecture Without Backend or Authentication | Implemented (Verified) | RNF-WEB-005, RNF-WEB-007 |
 | [ADR-0006](adr/0006-github-pages-publishing.md) | Quality-Gated GitHub Pages Publishing Pipeline | Implemented (Verified) | RNF-WEB-007 |
 | [ADR-0007](adr/0007-relational-academic-domain-evolution.md) | Relational Academic Domain Evolution (Courses, Enrollments, Activities) | Implemented (Verified) | RF-005..RF-007, RF-WEB-015..RF-WEB-026 |
+
+
+## ADR-0008 - Separate Academic Progress Context (v0.6)
+
+Status: Implemented in source, verification pending.
+
+Decision: Keep the v0.5 academic collection shape and introduce a separate progress domain/context for attendance and grade policy. Student transcripts are derived views. Persist progress under a distinct versioned key only after an existing privacy opt-in; purge it with the other academic keys on consent revocation. This enables backward compatibility with the published static GitHub Pages application.
+
+Trade-offs: No server-side audit, authentic attendance, identity verification or multi-user synchronization. Academic Intelligence is suitable for fictional demonstrations only.
+
+References: specs/academic-intelligence-v06.md, web/lib/domain/progress.ts, web/lib/context/AcademicProgressContext.tsx.
