@@ -48,3 +48,18 @@
 | **RNF-WEB-005** | Zero external transmission of academic records | `ADR-0005`, `TASK-WEB-004` | Client-only architecture (`web/lib/`) | Static code audit & E2E check | PASS |
 | **RNF-WEB-006** | Graceful handling of `localStorage` failures | `ADR-0003`, `TASK-WEB-004` | `web/lib/storage/storage.ts` (`try/catch` fallback) | `storage.test.ts` | PASS |
 | **RNF-WEB-007** | Static application export for GitHub Pages | `ADR-0002`, `ADR-0006`, `TASK-WEB-011` | `web/next.config.mjs`, `.github/workflows/academic-lab.yml` | `npm run build` (`web/out` generated) | PASS |
+
+
+## FEAT-005 v0.6 - Academic Intelligence (release gate pending)
+
+| Requirement | Component | Test/evidence path | Status |
+|---|---|---|---|
+| RF-WEB-027 | web/lib/domain/progress.ts / addSession | web/tests/unit/progress.test.ts | Source implemented; CI pending |
+| RF-WEB-028 | web/lib/domain/progress.ts / setAttendance | web/tests/unit/progress.test.ts | Source implemented; CI pending |
+| RF-WEB-029 | web/lib/domain/progress.ts / attendanceRate | web/tests/unit/progress.test.ts | Source implemented; CI pending |
+| RF-WEB-030 | web/lib/domain/progress.ts / validateWeights | web/tests/unit/progress.test.ts | Source implemented; CI pending |
+| RF-WEB-031 | web/lib/domain/progress.ts / weightedGrade | web/tests/unit/progress.test.ts | Source implemented; CI pending |
+| RF-WEB-032 | web/app/progress/page.tsx / transcript view | web/tests/e2e/academic-lab.spec.ts | Source implemented; browser verification pending |
+| RNF-WEB-009 | web/lib/storage/storage.ts / privacy key purge | web/tests/unit/storage.test.ts | Source implemented; CI pending |
+
+Reference: specs/academic-intelligence-v06.md. This table intentionally does not mark the new tests PASS before the final workflow and deployed browser are verified.
